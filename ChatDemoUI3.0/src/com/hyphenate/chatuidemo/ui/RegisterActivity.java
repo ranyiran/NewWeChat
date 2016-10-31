@@ -13,23 +13,30 @@
  */
 package com.hyphenate.chatuidemo.ui;
 
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.DemoHelper;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.exceptions.HyphenateException;
 
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * register screen
  */
 public class RegisterActivity extends BaseActivity {
+    @InjectView(R.id.ivBack)
+    ImageView ivBack;
     private EditText userNameEditText;
     private EditText passwordEditText;
     private EditText confirmPwdEditText;
@@ -39,6 +46,7 @@ public class RegisterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.em_activity_register);
+        ButterKnife.inject(this);
         userNameEditText = (EditText) findViewById(R.id.username);
         passwordEditText = (EditText) findViewById(R.id.password);
         confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
@@ -121,4 +129,8 @@ public class RegisterActivity extends BaseActivity {
         finish();
     }
 
+    @OnClick(R.id.ivBack)
+    public void onClick() {
+        finish();
+    }
 }
