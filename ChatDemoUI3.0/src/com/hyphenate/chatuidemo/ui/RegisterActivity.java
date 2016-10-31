@@ -54,6 +54,10 @@ public class RegisterActivity extends BaseActivity {
             Toast.makeText(this, getResources().getString(R.string.User_name_cannot_be_empty), Toast.LENGTH_SHORT).show();
             userNameEditText.requestFocus();
             return;
+        } else if (TextUtils.isEmpty(usernick)) {
+            Toast.makeText(this, getResources().getString(R.string.login_txt_user_empty), Toast.LENGTH_SHORT).show();
+            userNickEditText.requestFocus();
+            return;
         } else if (TextUtils.isEmpty(pwd)) {
             Toast.makeText(this, getResources().getString(R.string.Password_cannot_be_empty), Toast.LENGTH_SHORT).show();
             passwordEditText.requestFocus();
@@ -64,10 +68,6 @@ public class RegisterActivity extends BaseActivity {
             return;
         } else if (!pwd.equals(confirm_pwd)) {
             Toast.makeText(this, getResources().getString(R.string.Two_input_password), Toast.LENGTH_SHORT).show();
-            return;
-        } else if (!usernick.isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.login_txt_user_empty), Toast.LENGTH_SHORT).show();
-            userNickEditText.requestFocus();
             return;
         }
 
