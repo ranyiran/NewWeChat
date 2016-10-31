@@ -4,37 +4,55 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_bg" >
+    android:background="@color/common_bg">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/item_top" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_above="@+id/main_bottom"
+        android:background="@drawable/em_btn_style_alert_dialog_background" />
 
     <LinearLayout
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/bottom_bar_normal_bg"
+        android:background="@drawable/em_context_menu_item_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         tools:ignore="DisableBaselineAlignment">
 
+        <!--
+         android:id="@+id/btn_conversation"
+          android:id="@+id/btn_address_list"
+           android:id="@+id/btn_setting"
+        -->
         <RelativeLayout
-            android:id="@+id/btn_container_conversation"
+            android:id="@+id/btn_conversation"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="1">
 
-            <Button
-                android:id="@+id/btn_conversation"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/em_main_bottom_item_bg"
-                android:drawableTop="@drawable/em_tab_chat_bg"
-                android:onClick="onTabClicked"
-                android:paddingBottom="2dip"
-                android:paddingTop="7dip"
-                android:scaleType="matrix"
-                android:text="@string/session"
-                android:textColor="@color/em_main_botton_text_color"
-                android:textSize="12sp" />
+            <RadioButton
+                android:id="@+id/btn_conversation_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@null"
+                android:checked="true"
+                android:drawableTop="@drawable/tab_weixin"
+                android:gravity="center"
+                android:text="微信"
+                android:textColor="@color/btn_green_pressed" />
 
             <TextView
                 android:id="@+id/unread_msg_number"
@@ -51,24 +69,21 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/btn_container_address_list"
+            android:id="@+id/btn_address_list"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="1">
 
-            <Button
-                android:id="@+id/btn_address_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/em_main_bottom_item_bg"
-                android:drawableTop="@drawable/em_tab_contact_list_bg"
-                android:onClick="onTabClicked"
-                android:paddingBottom="2dip"
-                android:paddingTop="7dip"
-                android:scaleType="matrix"
-                android:text="@string/address_book"
-                android:textColor="@color/em_main_botton_text_color"
-                android:textSize="12sp" />
+            <RadioButton
+                android:id="@+id/btn_address_list_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@null"
+                android:drawableTop="@drawable/tab_contact_list"
+                android:gravity="center"
+                android:text="联系人"
+                android:textColor="@color/btn_white_pressed" />
 
             <TextView
                 android:id="@+id/unread_address_number"
@@ -76,36 +91,43 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/em_unread_dot"
-                android:visibility="visible" />
+                android:layout_marginTop="1dp"
+                android:background="@drawable/em_unread_count_bg"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:visibility="invisible" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/btn_container_setting"
+        <RadioButton
+            android:id="@+id/btn_friends"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/tab_find"
+            android:gravity="center"
+            android:text="朋友圈"
+            android:textColor="@color/btn_white_pressed" />
 
-            <Button
-                android:id="@+id/btn_setting"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/em_main_bottom_item_bg"
-                android:drawableTop="@drawable/em_tab_setting_bg"
-                android:onClick="onTabClicked"
-                android:paddingBottom="2dip"
-                android:paddingTop="7dip"
-                android:scaleType="matrix"
-                android:text="@string/setting"
-                android:textColor="@color/em_main_botton_text_color"
-                android:textSize="12sp" />
-        </RelativeLayout>
+        <RadioButton
+            android:id="@+id/btn_setting"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/tab_profile"
+            android:gravity="center"
+            android:text="我"
+            android:textColor="@color/btn_white_pressed" />
+
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/main_bottom" />
+        android:layout_above="@id/view"
+        android:layout_below="@+id/rlTop" />
 
 </RelativeLayout>
