@@ -336,4 +336,43 @@
     <!-- lint -->
     <string name="delete_contact">删除联系人</string>
     <string name="loading_more">正在加载更多...</string>
+    <!---->
+
+    <string name="Msg_101">账号已经存在</string>
+    <string name="Msg_102">注册失败</string>
+    <string name="Msg_103">解除注册失败</string>
+    <string name="Msg_104">查找用户失败</string>
+    <string name="Msg_105">账户不存在</string>
+    <string name="Msg_106">账户密码错误</string>
+    <string name="Msg_107">登陆成功</string>
+    <string name="Msg_108">昵称未修改</string>
+    <string name="Msg_109">昵称修改失败</string>
+    <string name="Msg_110">昵称未修改</string>
+    <string name="Msg_111">昵称修改失败</string>
+    <string name="Msg_112">用户上传地理位置失败</string>
+    <string name="Msg_113">用户更新地理位置失败</string>
+    <string name="Msg_201">上传头像失败</string>
+    <string name="Msg_202">更新头像失败</string>
+    <string name="Msg_301">已经是好友关系</string>
+    <string name="Msg_302">好友关系添加失败</string>
+    <string name="Msg_303">好友关系删除失败</string>
+    <string name="Msg_304">获取全部好友列表失败</string>
+    <string name="Msg_305">分页获取好友列表失败</string>
+    <string name="Msg_401">群组环信ID已经存在</string>
+    <string name="Msg_402">创建群组失败</string>
+    <string name="Msg_403">添加群组成员失败</string>
+    <string name="Msg_404">获取群成员失败</string>
+    <string name="Msg_405">群组不存在</string>
+    <string name="Msg_406">有相同群组名称</string>
+    <string name="Msg_407">群组名称修改失败</string>
+    <string name="Msg_408">删除群组成员失败</string>
+    <string name="Msg_409">删除多群组成员失败</string>
+    <string name="Msg_410">删除群组失败</string>
+    <string name="Msg_411">根据群组id查找群组失败</string>
+    <string name="Msg_412">根据环信id查找群组失败</string>
+    <string name="Msg_413">查找用户名称查找查找群组失败</string>
+    <string name="Msg_414">查找群组名称查找查找群组失败</string>
+    <string name="Msg_415">查找公开群失败</string>
+    <string name="Msg_501">获取附近的人失败</string>
+    <string name="Msg_1">未知错误</string>
 </resources>

@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,10 +30,12 @@ import com.hyphenate.exceptions.HyphenateException;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.ran.wechat.I;
 import cn.ran.wechat.R;
 import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.bean.Result;
 import cn.ran.wechat.net.NetDao;
+import cn.ran.wechat.utils.CommonUtils;
 import cn.ran.wechat.utils.MFGT;
 import cn.ran.wechat.utils.OkHttpUtils;
 
@@ -126,12 +128,21 @@ public class RegisterActivity extends BaseActivity {
         NetDao.registSet(mContext, username, usernick, pwd, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
-                if (result.getRetCode() == 0 && result.isRetMsg()) {
-                    registerEMServer();
-                } else if (result.getRetCode() == 101) {
-                    Toast.makeText(RegisterActivity.this, "服务器账户已存在", Toast.LENGTH_SHORT).show();
+                if (result == null) {
+
+                    pd.dismiss();
+                } else {
+                    if (result.isRetMsg()) {
+                        registerEMServer();
+                    } else {
+                        if (result.getRetCode() == I.MSG_REGISTER_USERNAME_EXISTS) {
+                            CommonUtils.showMsgShortToast(result.getRetCode());
+                            pd.dismiss();
+                        } else {
+                            unRegister();
+                        }
+                    }
                 }
-                pd.dismiss();
             }
 
             @Override
