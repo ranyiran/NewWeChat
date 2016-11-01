@@ -21,7 +21,6 @@ import com.easemob.redpacketsdk.RedPacket;
 
 public class SuperWeChatApplication extends Application {
 
-    public static SuperWeChatApplication application;
     public static Context applicationContext;
     private static SuperWeChatApplication instance;
     // login user name
@@ -32,13 +31,6 @@ public class SuperWeChatApplication extends Application {
      */
     public static String currentUserNick = "";
 
-    public static SuperWeChatApplication getApplication() {
-        return application;
-    }
-
-    public static void setApplication(SuperWeChatApplication application) {
-        SuperWeChatApplication.application = application;
-    }
 
     @Override
     public void onCreate() {

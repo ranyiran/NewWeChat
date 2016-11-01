@@ -148,7 +148,7 @@ public class OkHttpUtils<T> {
 
 
     private void initHandler() {
-        mHandler = new Handler(SuperWeChatApplication.application.getMainLooper()) {
+        mHandler = new Handler(SuperWeChatApplication.applicationContext.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
