@@ -17,7 +17,7 @@
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="2dp"
         android:layout_above="@+id/main_bottom"
         android:background="@drawable/em_btn_style_alert_dialog_background" />
 

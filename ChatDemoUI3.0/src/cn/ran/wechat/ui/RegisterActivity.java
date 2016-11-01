@@ -63,6 +63,9 @@ public class RegisterActivity extends BaseActivity {
             Toast.makeText(this, getResources().getString(R.string.User_name_cannot_be_empty), Toast.LENGTH_SHORT).show();
             userNameEditText.requestFocus();
             return;
+        } else if (!username.matches("[a-zA-Z]\\w{5,15}")) {
+            Toast.makeText(RegisterActivity.this, R.string.user_name + "格式不对", Toast.LENGTH_SHORT).show();
+            userNameEditText.requestFocus();
         } else if (TextUtils.isEmpty(usernick)) {
             Toast.makeText(this, getResources().getString(R.string.login_txt_user_empty), Toast.LENGTH_SHORT).show();
             userNickEditText.requestFocus();
