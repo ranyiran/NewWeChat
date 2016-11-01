@@ -47,5 +47,6 @@
         android:background="@drawable/btn_bg_gray"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:textColor="@color/black"
         android:text="@string/login_btn_register" />
 </RelativeLayout>

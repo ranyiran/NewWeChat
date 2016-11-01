@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class GuideActivity extends AppCompatActivity {
+public class GuideActivity extends BaseActivity {
 
     @InjectView(R.id.guideLogin)
     Button guideLogin;
