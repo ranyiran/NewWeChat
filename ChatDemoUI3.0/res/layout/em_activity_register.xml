@@ -5,7 +5,7 @@
     android:background="#eff2f6"
     android:orientation="vertical">
 
-    <include layout="@layout/item_back" />
+    <include layout="@layout/item_title" />
 
 
     <LinearLayout

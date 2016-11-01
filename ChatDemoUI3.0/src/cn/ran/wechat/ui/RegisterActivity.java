@@ -17,8 +17,10 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.EMError;
@@ -28,9 +30,12 @@ import com.hyphenate.exceptions.HyphenateException;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.R;
+import cn.ran.wechat.SuperWeChatHelper;
+import cn.ran.wechat.bean.Result;
+import cn.ran.wechat.net.NetDao;
 import cn.ran.wechat.utils.MFGT;
+import cn.ran.wechat.utils.OkHttpUtils;
 
 /**
  * register screen
@@ -38,27 +43,48 @@ import cn.ran.wechat.utils.MFGT;
 public class RegisterActivity extends BaseActivity {
     @InjectView(R.id.ivBack)
     ImageView ivBack;
-    private EditText userNameEditText;
-    private EditText passwordEditText;
-    private EditText confirmPwdEditText;
-    private EditText userNickEditText;
+    @InjectView(R.id.username)
+    EditText userNameEditText;
+    @InjectView(R.id.usernick)
+    EditText userNickEditText;
+    @InjectView(R.id.password)
+    EditText passwordEditText;
+    @InjectView(R.id.confirm_password)
+    EditText confirmPwdEditText;
+    @InjectView(R.id.btnRegister)
+    Button btnRegister;
+    @InjectView(R.id.tvCenter)
+    TextView tvCenter;
+
+    String username;
+    String pwd;
+    String confirm_pwd;
+    String usernick;
+
+    RegisterActivity mContext;
+    ProgressDialog pd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.em_activity_register);
         ButterKnife.inject(this);
-        userNameEditText = (EditText) findViewById(R.id.username);
-        passwordEditText = (EditText) findViewById(R.id.password);
-        confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
-        userNickEditText = (EditText) findViewById(R.id.usernick);
+        mContext = this;
+        initView();
     }
 
-    public void register(View view) {
-        final String username = userNameEditText.getText().toString().trim();
-        final String pwd = passwordEditText.getText().toString().trim();
-        String confirm_pwd = confirmPwdEditText.getText().toString().trim();
-        String usernick = userNickEditText.getText().toString().trim();
+    private void initView() {
+        ivBack.setVisibility(View.VISIBLE);
+        tvCenter.setVisibility(View.VISIBLE);
+        tvCenter.setText(R.string.register);
+    }
+
+    public void register() {
+        username = userNameEditText.getText().toString().trim();
+        pwd = passwordEditText.getText().toString().trim();
+        confirm_pwd = confirmPwdEditText.getText().toString().trim();
+        usernick = userNickEditText.getText().toString().trim();
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(this, getResources().getString(R.string.User_name_cannot_be_empty), Toast.LENGTH_SHORT).show();
             userNameEditText.requestFocus();
@@ -84,64 +110,111 @@ public class RegisterActivity extends BaseActivity {
         }
 
         if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(pwd)) {
-            final ProgressDialog pd = new ProgressDialog(this);
+            pd = new ProgressDialog(this);
             pd.setMessage(getResources().getString(R.string.Is_the_registered));
             pd.show();
-
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        // call method in SDK
-                        EMClient.getInstance().createAccount(username, pwd);
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                if (!RegisterActivity.this.isFinishing())
-                                    pd.dismiss();
-                                // save current user
-                                SuperWeChatHelper.getInstance().setCurrentUserName(username);
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registered_successfully), Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        });
-                    } catch (final HyphenateException e) {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                if (!RegisterActivity.this.isFinishing())
-                                    pd.dismiss();
-                                int errorCode = e.getErrorCode();
-                                if (errorCode == EMError.NETWORK_ERROR) {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_anomalies), Toast.LENGTH_SHORT).show();
-                                } else if (errorCode == EMError.USER_ALREADY_EXIST) {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.User_already_exists), Toast.LENGTH_SHORT).show();
-                                } else if (errorCode == EMError.USER_AUTHENTICATION_FAILED) {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_failed_without_permission), Toast.LENGTH_SHORT).show();
-                                } else if (errorCode == EMError.USER_ILLEGAL_ARGUMENT) {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.illegal_user_name), Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registration_failed), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-                }
-            }).start();
-
+            registerServer();
         }
     }
 
-    public void back(View view) {
-        finish();
+
+    private void registerServer() {
+        registerAppServer();
     }
 
-    @OnClick(R.id.ivBack)
-    public void onClick() {
-        MFGT.finish(this);
+    private void registerAppServer() {
+        NetDao.registSet(mContext, username, usernick, pwd, new OkHttpUtils.OnCompleteListener<Result>() {
+            @Override
+            public void onSuccess(Result result) {
+                if (result.getRetCode() == 0 && result.isRetMsg()) {
+                    registerEMServer();
+                } else if (result.getRetCode() == 101) {
+                    Toast.makeText(RegisterActivity.this, "服务器账户已存在", Toast.LENGTH_SHORT).show();
+                }
+                pd.dismiss();
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(RegisterActivity.this, "服务器异常", Toast.LENGTH_SHORT).show();
+                unRegister();
+                pd.dismiss();
+            }
+        });
     }
+
+    private void unRegister() {
+        NetDao.unregistSet(mContext, username, new OkHttpUtils.OnCompleteListener<Result>() {
+            @Override
+            public void onSuccess(Result result) {
+                Toast.makeText(RegisterActivity.this, "取消注册成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+
+    private void registerEMServer() {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    // call method in SDK
+                    EMClient.getInstance().createAccount(username, pwd);
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (!RegisterActivity.this.isFinishing())
+                                pd.dismiss();
+                            // save current user
+                            SuperWeChatHelper.getInstance().setCurrentUserName(username);
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registered_successfully), Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                } catch (final HyphenateException e) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (!RegisterActivity.this.isFinishing())
+                                pd.dismiss();
+                            unRegister();
+                            int errorCode = e.getErrorCode();
+                            if (errorCode == EMError.NETWORK_ERROR) {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_anomalies), Toast.LENGTH_SHORT).show();
+                            } else if (errorCode == EMError.USER_ALREADY_EXIST) {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.User_already_exists), Toast.LENGTH_SHORT).show();
+                            } else if (errorCode == EMError.USER_AUTHENTICATION_FAILED) {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_failed_without_permission), Toast.LENGTH_SHORT).show();
+                            } else if (errorCode == EMError.USER_ILLEGAL_ARGUMENT) {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.illegal_user_name), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registration_failed), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         MFGT.finish(this
         );
+    }
+
+    @OnClick({R.id.ivBack, R.id.btnRegister})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ivBack:
+                MFGT.finish(this);
+                break;
+            case R.id.btnRegister:
+                register();
+                break;
+        }
     }
 }
