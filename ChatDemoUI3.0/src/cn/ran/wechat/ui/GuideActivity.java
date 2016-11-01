@@ -1,16 +1,14 @@
 package cn.ran.wechat.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-
-import cn.ran.wechat.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.ran.wechat.R;
+import cn.ran.wechat.utils.MFGT;
 
 public class GuideActivity extends BaseActivity {
 
@@ -30,14 +28,10 @@ public class GuideActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.guideLogin:
-                Intent loginIntent = new Intent();
-                loginIntent.setClass(this, LoginActivity.class);
-                startActivity(loginIntent);
+                MFGT.gotoLogin(this);
                 break;
             case R.id.guideRegister:
-                Intent registerIntent = new Intent();
-                registerIntent.setClass(this, RegisterActivity.class);
-                startActivity(registerIntent);
+                MFGT.gotoRegister(this);
                 break;
         }
     }
