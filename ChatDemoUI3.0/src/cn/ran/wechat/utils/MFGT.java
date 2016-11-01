@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import cn.ran.wechat.R;
+import cn.ran.wechat.ui.GuideActivity;
 import cn.ran.wechat.ui.LoginActivity;
 import cn.ran.wechat.ui.MainActivity;
 import cn.ran.wechat.ui.RegisterActivity;
@@ -41,6 +42,7 @@ public class MFGT {
 
     public static void gotoLogin(Activity mContext) {
         startActivity(mContext, LoginActivity.class);
+
     }
 
     public static void gotoRegister(Activity mContext) {
@@ -48,4 +50,8 @@ public class MFGT {
 
     }
 
+    public static void gotoGuidActivity(Activity mContext) {
+        startActivity(mContext, GuideActivity.class);
+        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+    }
 }

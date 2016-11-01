@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import cn.ran.wechat.Constant;
-import cn.ran.wechat.DemoHelper;
+import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.R;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
@@ -65,7 +65,7 @@ public class GroupPickContactsActivity extends BaseActivity {
 			existMembers = new ArrayList<String>();
 		// get contact list
 		final List<EaseUser> alluserList = new ArrayList<EaseUser>();
-		for (EaseUser user : DemoHelper.getInstance().getContactList().values()) {
+		for (EaseUser user : SuperWeChatHelper.getInstance().getContactList().values()) {
 			if (!user.getUsername().equals(Constant.NEW_FRIENDS_USERNAME) & !user.getUsername().equals(Constant.GROUP_USERNAME) & !user.getUsername().equals(Constant.CHAT_ROOM) & !user.getUsername().equals(Constant.CHAT_ROBOT))
 				alluserList.add(user);
 		}
