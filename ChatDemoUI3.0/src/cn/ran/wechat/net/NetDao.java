@@ -14,12 +14,12 @@ import cn.ran.wechat.utils.OkHttpUtils;
 public class NetDao {
 
 
-    public static void loginSet(Context mContext, String userName, String passWord, OkHttpUtils.OnCompleteListener<Result> listener) {
-        OkHttpUtils<Result> utils = new OkHttpUtils<>(mContext);
+    public static void loginSet(Context mContext, String userName, String passWord, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_LOGIN)
                 .addParam(I.User.USER_NAME, userName)
                 .addParam(I.User.PASSWORD, MD5.getMessageDigest(passWord))
-                .targetClass(Result.class)
+                .targetClass(String.class)
                 .execute(listener);
     }
 

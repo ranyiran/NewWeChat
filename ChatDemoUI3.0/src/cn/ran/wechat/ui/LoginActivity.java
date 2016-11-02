@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 
 import butterknife.ButterKnife;
@@ -40,11 +41,14 @@ import cn.ran.wechat.SuperWeChatApplication;
 import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.bean.Result;
 import cn.ran.wechat.db.SuperWeChatDBManager;
+import cn.ran.wechat.db.UserDao;
 import cn.ran.wechat.net.NetDao;
+import cn.ran.wechat.utils.CommonUtils;
 import cn.ran.wechat.utils.L;
 import cn.ran.wechat.utils.MD5;
 import cn.ran.wechat.utils.MFGT;
 import cn.ran.wechat.utils.OkHttpUtils;
+import cn.ran.wechat.utils.ResultUtils;
 
 /**
  * Login screen
@@ -158,11 +162,29 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void LoginServer() {
-        NetDao.loginSet(mContext, currentUsername, currentPassword, new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.loginSet(mContext, currentUsername, currentPassword, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(Result result) {
-                L.e("result==" + result.toString());
-                LoginEmServer();
+            public void onSuccess(String s) {
+                if (s != null && s != "") {
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    L.e("result==" + result.toString());
+                    if (result != null && result.isRetMsg()) {
+                        User user = (User) result.getRetData();
+                        if (user != null) {
+                            UserDao dao = new UserDao(mContext);
+                            dao.saveUser(user);
+                            SuperWeChatHelper.getInstance().setCurrentUser(user);
+                            CommonUtils.showShortToast("欢迎:超级微信:" + user.getMUserName()+"登陆");
+                            L.e("success====");
+                        }
+                        LoginEmServer();
+
+                    } else {
+                        L.e("error====");
+                        pd.dismiss();
+                    }
+
+                }
             }
 
             @Override
@@ -186,7 +208,9 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onSuccess() {
-                Log.d(TAG, "login: onSuccess");
+
+                Log.d(TAG, "login: onSuccess++++++++");
+                CommonUtils.showShortToast("欢迎:环信:" + currentUsername+"登陆");
                 loginSuccess();
             }
 
