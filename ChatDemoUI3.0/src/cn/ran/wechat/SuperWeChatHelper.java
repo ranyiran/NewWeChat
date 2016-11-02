@@ -61,6 +61,7 @@ import cn.ran.wechat.ui.ChatActivity;
 import cn.ran.wechat.ui.MainActivity;
 import cn.ran.wechat.ui.VideoCallActivity;
 import cn.ran.wechat.ui.VoiceCallActivity;
+import cn.ran.wechat.utils.L;
 import cn.ran.wechat.utils.PreferenceManager;
 
 ;
@@ -853,7 +854,6 @@ public class SuperWeChatHelper {
     /**
      * update contact list
      *
-     * @param contactList
      */
     public void setContactList(Map<String, EaseUser> aContactList) {
         if (aContactList == null) {
@@ -926,7 +926,6 @@ public class SuperWeChatHelper {
     /**
      * update user list to cache and database
      *
-     * @param contactList
      */
     public void updateContactList(List<EaseUser> contactInfoList) {
         for (EaseUser u : contactInfoList) {
@@ -1245,6 +1244,7 @@ public class SuperWeChatHelper {
     public User getCurrentUser() {
         if (currentUser == null) {
             String usrrname = EMClient.getInstance().getCurrentUser();
+            L.i(TAG, "getCurrentUser" + username);
             currentUser = new User(usrrname);
         }
         return currentUser;

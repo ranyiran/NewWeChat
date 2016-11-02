@@ -55,6 +55,9 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             + UserDao.COLUMN_NAME_DISABLED_IDS + " TEXT);";
 
 
+    /**
+     * 服务器实体类的表
+     */
     private static final String USER_TABLE_CREATE = "CREATE TABLE "
             + UserDao.USER_TABLE_NAME + "("
             + UserDao.USER_COLUMN_NAME + " TEXT PRIMARY KEY,"

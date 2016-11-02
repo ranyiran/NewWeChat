@@ -157,7 +157,7 @@ public class LoginActivity extends BaseActivity {
         });
         pd.setMessage(getString(R.string.Is_landing));
         pd.show();
-        LoginServer();
+        LoginEmServer();
 
     }
 
@@ -167,23 +167,26 @@ public class LoginActivity extends BaseActivity {
             public void onSuccess(String s) {
                 if (s != null && s != "") {
                     Result result = ResultUtils.getResultFromJson(s, User.class);
-                    L.e("result==" + result.toString());
                     if (result != null && result.isRetMsg()) {
                         User user = (User) result.getRetData();
                         if (user != null) {
                             UserDao dao = new UserDao(mContext);
                             dao.saveUser(user);
                             SuperWeChatHelper.getInstance().setCurrentUser(user);
-                            CommonUtils.showShortToast("欢迎:超级微信:" + user.getMUserName()+"登陆");
+                            CommonUtils.showShortToast("欢迎:超级微信:" + user.getMUserName() + "登陆");
                             L.e("success====");
+                            loginSuccess();
                         }
-                        LoginEmServer();
+
 
                     } else {
                         L.e("error====");
                         pd.dismiss();
+                        CommonUtils.showShortToast("登陆异常");
                     }
 
+                } else {
+                    pd.dismiss();
                 }
             }
 
@@ -210,8 +213,7 @@ public class LoginActivity extends BaseActivity {
             public void onSuccess() {
 
                 Log.d(TAG, "login: onSuccess++++++++");
-                CommonUtils.showShortToast("欢迎:环信:" + currentUsername+"登陆");
-                loginSuccess();
+                LoginServer();
             }
 
             @Override
@@ -288,4 +290,9 @@ public class LoginActivity extends BaseActivity {
         MFGT.finish(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pd.dismiss();
+    }
 }

@@ -5,9 +5,12 @@ import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.User;
 
-import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.R;
+import cn.ran.wechat.SuperWeChatHelper;
+import cn.ran.wechat.db.UserDao;
+import cn.ran.wechat.utils.L;
 import cn.ran.wechat.utils.MFGT;
 
 /**
@@ -41,6 +44,10 @@ public class SplashActivity extends BaseActivity {
                     long start = System.currentTimeMillis();
                     EMClient.getInstance().groupManager().loadAllGroups();
                     EMClient.getInstance().chatManager().loadAllConversations();
+                    UserDao dao = new UserDao(mContext);
+                    User user = dao.getUser(EMClient.getInstance().getCurrentUser());
+                    L.i("superwechat:" + user.toString());
+                    SuperWeChatHelper.getInstance().setCurrentUser(user);
                     long costTime = System.currentTimeMillis() - start;
                     //wait
                     if (sleepTime - costTime > 0) {
