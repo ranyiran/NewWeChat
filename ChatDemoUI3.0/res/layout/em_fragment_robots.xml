@@ -11,7 +11,7 @@
         android:background="@color/top_bar_normal_bg"
         android:gravity="center_vertical" >
 
-      <include 
+      <include
           layout="@layout/ease_commom_back_btn"
           />
 
@@ -22,19 +22,19 @@
             android:text="@string/robot_chat"
             android:textColor="@color/bottom_text_color_normal"
             android:textSize="18sp" />
-        
+
     </RelativeLayout>
 
-    
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        
+
          <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_layout"
-            android:layout_height="match_parent" 
+            android:layout_height="match_parent"
             android:layout_width="match_parent">
-             
+
 		    <ListView
 		        android:id="@+id/list"
 		        android:layout_width="match_parent"
@@ -47,7 +47,7 @@
 		        android:fastScrollAlwaysVisible="false"
 		        android:fastScrollEnabled="false" />
 		 </android.support.v4.widget.SwipeRefreshLayout>
-		 
+
 	    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

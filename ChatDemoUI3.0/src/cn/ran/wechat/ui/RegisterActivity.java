@@ -36,6 +36,7 @@ import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.bean.Result;
 import cn.ran.wechat.net.NetDao;
 import cn.ran.wechat.utils.CommonUtils;
+import cn.ran.wechat.utils.MD5;
 import cn.ran.wechat.utils.MFGT;
 import cn.ran.wechat.utils.OkHttpUtils;
 
@@ -173,7 +174,7 @@ public class RegisterActivity extends BaseActivity {
             public void run() {
                 try {
                     // call method in SDK
-                    EMClient.getInstance().createAccount(username, pwd);
+                    EMClient.getInstance().createAccount(username, MD5.getMessageDigest(pwd));
                     runOnUiThread(new Runnable() {
                         public void run() {
                             if (!RegisterActivity.this.isFinishing())

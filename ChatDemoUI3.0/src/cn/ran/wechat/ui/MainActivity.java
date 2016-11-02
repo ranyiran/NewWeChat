@@ -15,6 +15,7 @@ package cn.ran.wechat.ui;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,13 +25,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,13 +47,6 @@ import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.chat.EMMessage;
-import cn.ran.wechat.Constant;
-import cn.ran.wechat.SuperWeChatHelper;
-import cn.ran.wechat.R;
-import cn.ran.wechat.db.InviteMessgeDao;
-import cn.ran.wechat.db.UserDao;
-import cn.ran.wechat.runtimepermissions.PermissionsManager;
-import cn.ran.wechat.runtimepermissions.PermissionsResultAction;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.EMLog;
 import com.umeng.analytics.MobclickAgent;
@@ -58,16 +54,48 @@ import com.umeng.update.UmengUpdateAgent;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+import cn.ran.wechat.Constant;
+import cn.ran.wechat.R;
+import cn.ran.wechat.SuperWeChatHelper;
+import cn.ran.wechat.db.InviteMessgeDao;
+import cn.ran.wechat.db.UserDao;
+import cn.ran.wechat.runtimepermissions.PermissionsManager;
+import cn.ran.wechat.runtimepermissions.PermissionsResultAction;
+import cn.ran.wechat.utils.MFGT;
+
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity {
 
     protected static final String TAG = "MainActivity";
+    @InjectView(R.id.tvTitle)
+    TextView tvTitle;
+    @InjectView(R.id.ivRight)
+    ImageView ivRight;
+    @InjectView(R.id.btn_conversation_in)
+    ImageView btnConversationIn;
+    @InjectView(R.id.tvWeixin)
+    TextView tvWeixin;
+    @InjectView(R.id.btn_address_list_in)
+    ImageView btnAddressListIn;
+    @InjectView(R.id.tvAddress)
+    TextView tvAddress;
+    @InjectView(R.id.btn_friends_in)
+    ImageView btnFriendsIn;
+    @InjectView(R.id.tvFriends)
+    TextView tvFriends;
+    @InjectView(R.id.btn_setting_in)
+    ImageView btnSettingIn;
+    @InjectView(R.id.tvMe)
+    TextView tvMe;
     // textview for unread message count
     private TextView unreadLabel;
     // textview for unread event message
     private TextView unreadAddressLable;
-
-    private Button[] mTabs;
+    MainActivity mContext;
+    private RelativeLayout[] mTabs;
     private ContactListFragment contactListFragment;
     private Fragment[] fragments;
     private int index;
@@ -88,13 +116,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mContext = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String packageName = getPackageName();
             PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
             if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                 Intent intent = new Intent();
-                intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                 intent.setData(Uri.parse("package:" + packageName));
                 startActivity(intent);
             }
@@ -104,14 +132,15 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)) {
             SuperWeChatHelper.getInstance().logout(false, null);
             finish();
-            startActivity(new Intent(this, LoginActivity.class));
+            MFGT.gotoLogin(mContext);
             return;
         } else if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false)) {
             finish();
-            startActivity(new Intent(this, LoginActivity.class));
+            MFGT.gotoLogin(mContext);
             return;
         }
         setContentView(R.layout.em_activity_main);
+        ButterKnife.inject(this);
         // runtime permission for android 6.0, just require all permissions here for simple
         requestPermissions();
 
@@ -167,12 +196,16 @@ public class MainActivity extends BaseActivity {
      * init views
      */
     private void initView() {
+        tvTitle.setVisibility(View.VISIBLE);
+        tvTitle.setText(R.string.app_name);
+        ivRight.setVisibility(View.VISIBLE);
+        ivRight.setImageResource(R.drawable.icon_add);
         unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
         unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
-        mTabs = new Button[3];
-        mTabs[0] = (Button) findViewById(R.id.btn_conversation_in);
-        mTabs[1] = (Button) findViewById(R.id.btn_address_list_in);
-        mTabs[2] = (Button) findViewById(R.id.btn_setting);
+        mTabs = new RelativeLayout[3];
+        mTabs[0] = (RelativeLayout) findViewById(R.id.btn_conversation);
+        mTabs[1] = (RelativeLayout) findViewById(R.id.btn_address_list);
+        mTabs[2] = (RelativeLayout) findViewById(R.id.btn_setting);
         // select first tab
         mTabs[0].setSelected(true);
     }
@@ -186,12 +219,15 @@ public class MainActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_conversation:
                 index = 0;
+                tvWeixin.setTextColor(getResources().getColor(R.color.green));
                 break;
             case R.id.btn_address_list:
                 index = 1;
+                tvAddress.setTextColor(getResources().getColor(R.color.green));
                 break;
             case R.id.btn_setting:
                 index = 2;
+                tvMe.setTextColor(getResources().getColor(R.color.green));
                 break;
         }
         if (currentTabIndex != index) {
@@ -304,6 +340,10 @@ public class MainActivity extends BaseActivity {
             }
         };
         broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @OnClick(R.id.ivRight)
+    public void onClick() {
     }
 
     public class MyContactListener implements EMContactListener {
@@ -461,8 +501,8 @@ public class MainActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    private android.app.AlertDialog.Builder conflictBuilder;
-    private android.app.AlertDialog.Builder accountRemovedBuilder;
+    private AlertDialog.Builder conflictBuilder;
+    private AlertDialog.Builder accountRemovedBuilder;
     private boolean isConflictDialogShow;
     private boolean isAccountRemovedDialogShow;
     private BroadcastReceiver internalDebugReceiver;
@@ -481,7 +521,7 @@ public class MainActivity extends BaseActivity {
             // clear up global variables
             try {
                 if (conflictBuilder == null)
-                    conflictBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
+                    conflictBuilder = new AlertDialog.Builder(MainActivity.this);
                 conflictBuilder.setTitle(st);
                 conflictBuilder.setMessage(R.string.connect_conflict);
                 conflictBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -518,7 +558,7 @@ public class MainActivity extends BaseActivity {
             // clear up global variables
             try {
                 if (accountRemovedBuilder == null)
-                    accountRemovedBuilder = new android.app.AlertDialog.Builder(MainActivity.this);
+                    accountRemovedBuilder = new AlertDialog.Builder(MainActivity.this);
                 accountRemovedBuilder.setTitle(st5);
                 accountRemovedBuilder.setMessage(R.string.em_user_remove);
                 accountRemovedBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
