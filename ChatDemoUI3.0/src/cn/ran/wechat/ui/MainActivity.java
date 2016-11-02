@@ -220,14 +220,20 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_conversation:
                 index = 0;
                 tvWeixin.setTextColor(getResources().getColor(R.color.green));
+                tvAddress.setTextColor(getResources().getColor(R.color.text_grey));
+                tvMe.setTextColor(getResources().getColor(R.color.text_grey));
                 break;
             case R.id.btn_address_list:
                 index = 1;
                 tvAddress.setTextColor(getResources().getColor(R.color.green));
+                tvWeixin.setTextColor(getResources().getColor(R.color.text_grey));
+                tvMe.setTextColor(getResources().getColor(R.color.text_grey));
                 break;
             case R.id.btn_setting:
                 index = 2;
                 tvMe.setTextColor(getResources().getColor(R.color.green));
+                tvAddress.setTextColor(getResources().getColor(R.color.text_grey));
+                tvWeixin.setTextColor(getResources().getColor(R.color.text_grey));
                 break;
         }
         if (currentTabIndex != index) {

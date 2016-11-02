@@ -17,16 +17,17 @@
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1dip"
         android:layout_above="@+id/main_bottom"
-        android:background="@drawable/em_btn_style_alert_dialog_background" />
+        android:background="@drawable/em_btn_style_alert_dialog_background"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/em_context_menu_item_bg"
+        android:background="@drawable/ease_input_bar_bg_normal"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         tools:ignore="DisableBaselineAlignment">
@@ -37,11 +38,11 @@
            android:id="@+id/btn_setting"
         -->
         <RelativeLayout
-            android:onClick="onTabClicked"
             android:id="@+id/btn_conversation"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:onClick="onTabClicked">
 
             <ImageView
                 android:id="@+id/btn_conversation_in"
@@ -57,7 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_conversation_in"
                 android:layout_centerHorizontal="true"
-                android:text="微信" />
+                android:text="微信"
+                android:textColor="@color/text_grey" />
 
             <TextView
                 android:id="@+id/unread_msg_number"
@@ -74,11 +76,11 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:onClick="onTabClicked"
             android:id="@+id/btn_address_list"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:onClick="onTabClicked">
 
             <ImageView
                 android:id="@+id/btn_address_list_in"
@@ -93,7 +95,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_address_list_in"
                 android:layout_centerHorizontal="true"
-                android:text="通讯录" />
+                android:text="通讯录"
+                android:textColor="@color/text_grey" />
 
             <TextView
                 android:id="@+id/unread_address_number"
@@ -128,16 +131,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_friends_in"
                 android:layout_centerHorizontal="true"
-                android:text="朋友圈" />
+                android:text="朋友圈"
+                android:textColor="@color/text_grey" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:onClick="onTabClicked"
             android:id="@+id/btn_setting"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:onClick="onTabClicked">
 
             <ImageView
                 android:id="@+id/btn_setting_in"
@@ -152,7 +156,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_setting_in"
                 android:layout_centerHorizontal="true"
-                android:text="我" />
+                android:text="我"
+                android:textColor="@color/text_grey" />
 
         </RelativeLayout>
 
