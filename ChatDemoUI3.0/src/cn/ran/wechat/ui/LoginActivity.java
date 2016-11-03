@@ -40,7 +40,6 @@ import cn.ran.wechat.R;
 import cn.ran.wechat.SuperWeChatApplication;
 import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.bean.Result;
-import cn.ran.wechat.db.SuperWeChatDBManager;
 import cn.ran.wechat.db.UserDao;
 import cn.ran.wechat.net.NetDao;
 import cn.ran.wechat.utils.CommonUtils;
@@ -174,11 +173,9 @@ public class LoginActivity extends BaseActivity {
                             dao.saveUser(user);
                             SuperWeChatHelper.getInstance().setCurrentUser(user);
                             CommonUtils.showShortToast("欢迎:超级微信:" + user.getMUserName() + "登陆");
-                            L.e("success====");
+                            L.e("success====" + user.toString());
                             loginSuccess();
                         }
-
-
                     } else {
                         L.e("error====");
                         pd.dismiss();
@@ -192,7 +189,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onError(String error) {
-
+                pd.dismiss();
             }
         });
 
@@ -201,7 +198,7 @@ public class LoginActivity extends BaseActivity {
     private void LoginEmServer() {
         // After logout，the DemoDB may still be accessed due to async callback, so the DemoDB will be re-opened again.
         // close it before login to make sure DemoDB not overlap
-        SuperWeChatDBManager.getInstance().closeDB();
+
         SuperWeChatHelper.getInstance().setCurrentUserName(currentUsername);
 
         final long start = System.currentTimeMillis();
@@ -211,7 +208,6 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onSuccess() {
-
                 Log.d(TAG, "login: onSuccess++++++++");
                 LoginServer();
             }
@@ -267,6 +263,7 @@ public class LoginActivity extends BaseActivity {
         if (autoLogin) {
             return;
         }
+        initView();
     }
 
     @OnClick({R.id.ivBack, R.id.btnRegister, R.id.btnLogin})
@@ -293,6 +290,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        pd.dismiss();
+        if (pd != null) {
+            pd.dismiss();
+        }
     }
 }
