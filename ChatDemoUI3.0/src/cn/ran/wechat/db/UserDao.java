@@ -18,6 +18,7 @@ import android.content.Context;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,7 @@ public class UserDao {
     public static final String ROBOT_COLUMN_NAME_AVATAR = "avatar";
 
     public UserDao(Context context) {
+
     }
 
     /**
@@ -60,18 +62,11 @@ public class UserDao {
         SuperWeChatDBManager.getInstance().saveContactList(contactList);
     }
 
-    /**
-     * get contact list
-     *
-     * @return
-     */
-    public Map<String, EaseUser> getContactList() {
 
-        return SuperWeChatDBManager.getInstance().getContactList();
-    }
 
     /**
      * delete a contact
+     *
      * @param username
      */
     public void deleteContact(String username) {
@@ -80,6 +75,7 @@ public class UserDao {
 
     /**
      * save a contact
+     *
      * @param user
      */
     public void saveContact(EaseUser user) {
@@ -121,4 +117,42 @@ public class UserDao {
     public boolean updateUser(User user) {
         return SuperWeChatDBManager.getInstance().updateUser(user);
     }
+
+    public void saveAppContactList(ArrayList<User> mAppContactList) {
+        SuperWeChatDBManager.getInstance().saveAppContactList(mAppContactList);
+    }
+
+    public void saveAppContact(User user) {
+        SuperWeChatDBManager.getInstance().saveAppContact(user);
+
+    }
+
+    /**
+     * get contact list
+     *
+     * @return
+     */
+      public Map<String, EaseUser> getContactList() {
+
+        return SuperWeChatDBManager.getInstance().getContactList();
+    }
+
+
+    public Map<String, User> getAppContactList() {
+        return SuperWeChatDBManager.getInstance().getAppContactList();
+    }
+    /**
+     public void saveContactList(List<EaseUser> contactList) {
+     SuperWeChatDBManager.getInstance().saveContactList(contactList);
+     }
+
+     public Map<String, EaseUser> getContactList() {
+
+     return SuperWeChatDBManager.getInstance().getContactList();
+     }
+
+     public void saveContact(EaseUser user) {
+     SuperWeChatDBManager.getInstance().saveContact(user);
+     }
+     */
 }
