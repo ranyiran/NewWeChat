@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
@@ -14,160 +15,70 @@
         <include layout="@layout/item_title" />
     </RelativeLayout>
 
-    <View
-        android:id="@+id/view"
+    <cn.ran.wechat.widget.MFViewPager
+        android:id="@+id/layout_viewpage"
         android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_above="@+id/main_bottom"
-        android:background="@drawable/em_btn_style_alert_dialog_background"
-        android:visibility="gone" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlTop">
+
+
+    </cn.ran.wechat.widget.MFViewPager>
+
 
     <LinearLayout
-        android:id="@+id/main_bottom"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/ease_input_bar_bg_normal"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:ignore="DisableBaselineAlignment">
+        android:orientation="vertical">
 
-        <!--
-         android:id="@+id/btn_conversation"
-          android:id="@+id/btn_address_list"
-           android:id="@+id/btn_setting"
-        -->
-        <RelativeLayout
-            android:id="@+id/btn_conversation"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="onTabClicked">
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#D6CDCD" />
 
-            <ImageView
-                android:id="@+id/btn_conversation_in"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:layout_centerHorizontal="true"
-                android:drawableTop="@drawable/tab_weixin"
-                android:src="@drawable/tab_weixin" />
+        <cn.ran.wechat.widget.DMTabHost
+            android:layout_width="match_parent"
+            android:layout_height="47dp">
 
-            <TextView
-                android:id="@+id/tvWeixin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_conversation_in"
-                android:layout_centerHorizontal="true"
-                android:text="微信"
-                android:textColor="@color/text_grey" />
+            <cn.ran.wechat.widget.DMTabButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:drawableTop="@drawable/tab_weixin"
+                app:tabtext="微信">
 
-            <TextView
-                android:id="@+id/unread_msg_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="1dp"
-                android:background="@drawable/em_unread_count_bg"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:visibility="invisible" />
-        </RelativeLayout>
+            </cn.ran.wechat.widget.DMTabButton>
 
-        <RelativeLayout
-            android:id="@+id/btn_address_list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="onTabClicked">
+            <cn.ran.wechat.widget.DMTabButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:drawableTop="@drawable/tab_contact_list"
+                app:tabtext="通讯录">
 
-            <ImageView
-                android:id="@+id/btn_address_list_in"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/tab_contact_list" />
+            </cn.ran.wechat.widget.DMTabButton>
 
-            <TextView
-                android:id="@+id/tvAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_address_list_in"
-                android:layout_centerHorizontal="true"
-                android:text="通讯录"
-                android:textColor="@color/text_grey" />
+            <cn.ran.wechat.widget.DMTabButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:drawableTop="@drawable/tab_find"
+                app:tabtext="发现">
 
-            <TextView
-                android:id="@+id/unread_address_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="1dp"
-                android:background="@drawable/em_unread_count_bg"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:visibility="invisible" />
-        </RelativeLayout>
+            </cn.ran.wechat.widget.DMTabButton>
 
-        <RelativeLayout
-            android:id="@+id/btn_friends"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            <cn.ran.wechat.widget.DMTabButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:drawableTop="@drawable/tab_profile"
+                app:tabtext="我">
 
-            <ImageView
-                android:id="@+id/btn_friends_in"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/tab_find" />
-
-            <TextView
-                android:id="@+id/tvFriends"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_friends_in"
-                android:layout_centerHorizontal="true"
-                android:text="朋友圈"
-                android:textColor="@color/text_grey" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/btn_setting"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="onTabClicked">
-
-            <ImageView
-                android:id="@+id/btn_setting_in"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/tab_profile" />
-
-            <TextView
-                android:id="@+id/tvMe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_setting_in"
-                android:layout_centerHorizontal="true"
-                android:text="我"
-                android:textColor="@color/text_grey" />
-
-        </RelativeLayout>
-
+            </cn.ran.wechat.widget.DMTabButton>
+        </cn.ran.wechat.widget.DMTabHost>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/view"
-        android:layout_below="@+id/rlTop" />
 
 </RelativeLayout>

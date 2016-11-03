@@ -74,34 +74,34 @@ public class MainActivity extends BaseActivity {
     TextView tvTitle;
     @InjectView(R.id.ivRight)
     ImageView ivRight;
-    @InjectView(R.id.btn_conversation_in)
-    ImageView btnConversationIn;
-    @InjectView(R.id.tvWeixin)
-    TextView tvWeixin;
-    @InjectView(R.id.btn_address_list_in)
-    ImageView btnAddressListIn;
-    @InjectView(R.id.tvAddress)
-    TextView tvAddress;
-    @InjectView(R.id.btn_friends_in)
-    ImageView btnFriendsIn;
-    @InjectView(R.id.tvFriends)
-    TextView tvFriends;
-    @InjectView(R.id.btn_setting_in)
-    ImageView btnSettingIn;
-    @InjectView(R.id.tvMe)
-    TextView tvMe;
-    // textview for unread message count
-    private TextView unreadLabel;
-    // textview for unread event message
-    private TextView unreadAddressLable;
-    MainActivity mContext;
-    private RelativeLayout[] mTabs;
-    private ContactListFragment contactListFragment;
-    private Fragment[] fragments;
-    private int index;
-    private int currentTabIndex;
+    /* @InjectView(R.id.btn_conversation_in)
+     ImageView btnConversationIn;
+     @InjectView(R.id.tvWeixin)
+     TextView tvWeixin;
+     @InjectView(R.id.btn_address_list_in)
+     ImageView btnAddressListIn;
+     @InjectView(R.id.tvAddress)
+     TextView tvAddress;
+     @InjectView(R.id.btn_friends_in)
+     ImageView btnFriendsIn;
+     @InjectView(R.id.tvFriends)
+     TextView tvFriends;
+     @InjectView(R.id.btn_setting_in)
+     ImageView btnSettingIn;
+     @InjectView(R.id.tvMe)
+     TextView tvMe;*/
+//    // textview for unread message count
+//    private TextView unreadLabel;
+//    // textview for unread event message
+//    private TextView unreadAddressLable;
+//    private RelativeLayout[] mTabs;
+//    private ContactListFragment contactListFragment;
+//    private Fragment[] fragments;
+//    private int index;
+//    private int currentTabIndex;
     // user logged into another device
     public boolean isConflict = false;
+    MainActivity mContext;
     // user account was removed
     private boolean isCurrentAccountRemoved = false;
 
@@ -117,17 +117,53 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String packageName = getPackageName();
-            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + packageName));
-                startActivity(intent);
-            }
-        }
+        savePower();
+        checkLogin(savedInstanceState);
 
+
+        setContentView(R.layout.em_activity_main);
+        ButterKnife.inject(this);
+        // runtime permission for android 6.0, just require all permissions here for simple
+        requestPermissions();
+        initView();
+        ument();
+        checkAccount();
+
+        inviteMessgeDao = new InviteMessgeDao(this);
+        UserDao userDao = new UserDao(this);
+//        conversationListFragment = new ConversationListFragment();
+//        contactListFragment = new ContactListFragment();
+//        SettingsFragment settingFragment = new SettingsFragment();
+//        fragments = new Fragment[]{conversationListFragment, contactListFragment, settingFragment};
+//
+//        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, conversationListFragment)
+//                .add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(conversationListFragment)
+//                .commit();
+
+        //register broadcast receiver to receive the change of group from DemoHelper
+        registerBroadcastReceiver();
+
+        EMClient.getInstance().contactManager().setContactListener(new MyContactListener());
+        //debug purpose only
+        registerInternalDebugReceiver();
+    }
+
+    private void checkAccount() {
+        if (getIntent().getBooleanExtra(Constant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
+            showConflictDialog();
+        } else if (getIntent().getBooleanExtra(Constant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
+            showAccountRemovedDialog();
+        }
+    }
+
+    private void ument() {
+        //umeng api
+        MobclickAgent.updateOnlineConfig(this);
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.update(this);
+    }
+
+    private void checkLogin(Bundle savedInstanceState) {
         //make sure activity will not in background if user is logged into another device or removed
         if (savedInstanceState != null && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED, false)) {
             SuperWeChatHelper.getInstance().logout(false, null);
@@ -139,42 +175,19 @@ public class MainActivity extends BaseActivity {
             MFGT.gotoLogin(mContext);
             return;
         }
-        setContentView(R.layout.em_activity_main);
-        ButterKnife.inject(this);
-        // runtime permission for android 6.0, just require all permissions here for simple
-        requestPermissions();
+    }
 
-        initView();
-
-        //umeng api
-        MobclickAgent.updateOnlineConfig(this);
-        UmengUpdateAgent.setUpdateOnlyWifi(false);
-        UmengUpdateAgent.update(this);
-
-        if (getIntent().getBooleanExtra(Constant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
-            showConflictDialog();
-        } else if (getIntent().getBooleanExtra(Constant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
-            showAccountRemovedDialog();
+    private void savePower() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                startActivity(intent);
+            }
         }
-
-        inviteMessgeDao = new InviteMessgeDao(this);
-        UserDao userDao = new UserDao(this);
-        conversationListFragment = new ConversationListFragment();
-        contactListFragment = new ContactListFragment();
-        SettingsFragment settingFragment = new SettingsFragment();
-        fragments = new Fragment[]{conversationListFragment, contactListFragment, settingFragment};
-
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, conversationListFragment)
-                .add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(conversationListFragment)
-                .commit();
-
-        //register broadcast receiver to receive the change of group from DemoHelper
-        registerBroadcastReceiver();
-
-
-        EMClient.getInstance().contactManager().setContactListener(new MyContactListener());
-        //debug purpose only
-        registerInternalDebugReceiver();
     }
 
     @TargetApi(23)
@@ -200,54 +213,14 @@ public class MainActivity extends BaseActivity {
         tvTitle.setText(R.string.app_name);
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(R.drawable.icon_add);
-        unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
-        unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
-        mTabs = new RelativeLayout[3];
-        mTabs[0] = (RelativeLayout) findViewById(R.id.btn_conversation);
-        mTabs[1] = (RelativeLayout) findViewById(R.id.btn_address_list);
-        mTabs[2] = (RelativeLayout) findViewById(R.id.btn_setting);
-        // select first tab
-        mTabs[0].setSelected(true);
-    }
-
-    /**
-     * on tab clicked
-     *
-     * @param view
-     */
-    public void onTabClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_conversation:
-                index = 0;
-                tvWeixin.setTextColor(getResources().getColor(R.color.green));
-                tvAddress.setTextColor(getResources().getColor(R.color.text_grey));
-                tvMe.setTextColor(getResources().getColor(R.color.text_grey));
-                break;
-            case R.id.btn_address_list:
-                index = 1;
-                tvAddress.setTextColor(getResources().getColor(R.color.green));
-                tvWeixin.setTextColor(getResources().getColor(R.color.text_grey));
-                tvMe.setTextColor(getResources().getColor(R.color.text_grey));
-                break;
-            case R.id.btn_setting:
-                index = 2;
-                tvMe.setTextColor(getResources().getColor(R.color.green));
-                tvAddress.setTextColor(getResources().getColor(R.color.text_grey));
-                tvWeixin.setTextColor(getResources().getColor(R.color.text_grey));
-                break;
-        }
-        if (currentTabIndex != index) {
-            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-            trx.hide(fragments[currentTabIndex]);
-            if (!fragments[index].isAdded()) {
-                trx.add(R.id.fragment_container, fragments[index]);
-            }
-            trx.show(fragments[index]).commit();
-        }
-        mTabs[currentTabIndex].setSelected(false);
-        // set current tab selected
-        mTabs[index].setSelected(true);
-        currentTabIndex = index;
+//        unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
+//        unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
+//        mTabs = new RelativeLayout[3];
+//        mTabs[0] = (RelativeLayout) findViewById(R.id.btn_conversation);
+//        mTabs[1] = (RelativeLayout) findViewById(R.id.btn_address_list);
+//        mTabs[2] = (RelativeLayout) findViewById(R.id.btn_setting);
+//        // select first tab
+//        mTabs[0].setSelected(true);
     }
 
     EMMessageListener messageListener = new EMMessageListener() {
@@ -293,12 +266,12 @@ public class MainActivity extends BaseActivity {
             public void run() {
                 // refresh unread count
                 updateUnreadLabel();
-                if (currentTabIndex == 0) {
+                /*if (currentTabIndex == 0) {
                     // refresh conversation list
                     if (conversationListFragment != null) {
                         conversationListFragment.refresh();
                     }
-                }
+                }*/
             }
         });
     }
@@ -320,16 +293,16 @@ public class MainActivity extends BaseActivity {
             public void onReceive(Context context, Intent intent) {
                 updateUnreadLabel();
                 updateUnreadAddressLable();
-                if (currentTabIndex == 0) {
-                    // refresh conversation list
-                    if (conversationListFragment != null) {
-                        conversationListFragment.refresh();
-                    }
-                } else if (currentTabIndex == 1) {
-                    if (contactListFragment != null) {
-                        contactListFragment.refresh();
-                    }
-                }
+//                if (currentTabIndex == 0) {
+//                    // refresh conversation list
+//                    if (conversationListFragment != null) {
+//                        conversationListFragment.refresh();
+//                    }
+//                } else if (currentTabIndex == 1) {
+//                    if (contactListFragment != null) {
+//                        contactListFragment.refresh();
+//                    }
+//                }
                 String action = intent.getAction();
                 if (action.equals(Constant.ACTION_GROUP_CHANAGED)) {
                     if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
@@ -411,12 +384,12 @@ public class MainActivity extends BaseActivity {
      */
     public void updateUnreadLabel() {
         int count = getUnreadMsgCountTotal();
-        if (count > 0) {
-            unreadLabel.setText(String.valueOf(count));
-            unreadLabel.setVisibility(View.VISIBLE);
-        } else {
-            unreadLabel.setVisibility(View.INVISIBLE);
-        }
+//        if (count > 0) {
+//            unreadLabel.setText(String.valueOf(count));
+//            unreadLabel.setVisibility(View.VISIBLE);
+//        } else {
+//            unreadLabel.setVisibility(View.INVISIBLE);
+//        }
     }
 
     /**
@@ -426,11 +399,11 @@ public class MainActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             public void run() {
                 int count = getUnreadAddressCountTotal();
-                if (count > 0) {
-                    unreadAddressLable.setVisibility(View.VISIBLE);
-                } else {
-                    unreadAddressLable.setVisibility(View.INVISIBLE);
-                }
+//                if (count > 0) {
+//                    unreadAddressLable.setVisibility(View.VISIBLE);
+//                } else {
+//                    unreadAddressLable.setVisibility(View.INVISIBLE);
+//                }
             }
         });
 
