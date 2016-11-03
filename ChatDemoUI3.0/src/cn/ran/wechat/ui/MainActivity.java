@@ -27,13 +27,11 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,20 +58,20 @@ import butterknife.OnClick;
 import cn.ran.wechat.Constant;
 import cn.ran.wechat.R;
 import cn.ran.wechat.SuperWeChatHelper;
+import cn.ran.wechat.adapter.MainTabAdpter;
 import cn.ran.wechat.db.InviteMessgeDao;
 import cn.ran.wechat.db.UserDao;
 import cn.ran.wechat.runtimepermissions.PermissionsManager;
 import cn.ran.wechat.runtimepermissions.PermissionsResultAction;
 import cn.ran.wechat.utils.MFGT;
+import cn.ran.wechat.widget.DMTabHost;
+import cn.ran.wechat.widget.MFViewPager;
 
 @SuppressLint("NewApi")
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedChangeListener
+        , ViewPager.OnPageChangeListener {
 
     protected static final String TAG = "MainActivity";
-    @InjectView(R.id.tvTitle)
-    TextView tvTitle;
-    @InjectView(R.id.ivRight)
-    ImageView ivRight;
     /* @InjectView(R.id.btn_conversation_in)
      ImageView btnConversationIn;
      @InjectView(R.id.tvWeixin)
@@ -102,8 +100,19 @@ public class MainActivity extends BaseActivity {
     // user logged into another device
     public boolean isConflict = false;
     MainActivity mContext;
+    @InjectView(R.id.tvTitle)
+    TextView tvTitle;
+    @InjectView(R.id.ivRight)
+    ImageView ivRight;
+    @InjectView(R.id.layout_viewpage)
+    MFViewPager layoutViewpage;
+    @InjectView(R.id.layout_tabhost)
+    DMTabHost layoutTabhost;
     // user account was removed
     private boolean isCurrentAccountRemoved = false;
+
+
+    MainTabAdpter adapter;
 
 
     /**
@@ -209,10 +218,25 @@ public class MainActivity extends BaseActivity {
      * init views
      */
     private void initView() {
+
         tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText(R.string.app_name);
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(R.drawable.icon_add);
+        adapter = new MainTabAdpter(getSupportFragmentManager());
+        adapter.clear();
+        layoutViewpage.setAdapter(adapter);
+        layoutViewpage.setOffscreenPageLimit(4);
+        adapter.addFragment(new ConversationListFragment(), getString(R.string.app_name));
+        adapter.addFragment(new ContactListFragment(), getString(R.string.contacts));
+        adapter.addFragment(new DicoverFragment(), getString(R.string.discover));
+        adapter.addFragment(new SettingsFragment(), getString(R.string.me));
+        adapter.notifyDataSetChanged();
+        layoutTabhost.setChecked(0);
+        layoutTabhost.setOnCheckedChangeListener(this);
+        layoutViewpage.setOnPageChangeListener(this);
+
+
 //        unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
 //        unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
 //        mTabs = new RelativeLayout[3];
@@ -323,6 +347,27 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.ivRight)
     public void onClick() {
+    }
+
+    @Override
+    public void onCheckedChange(int checkedPosition, boolean byUser) {
+        layoutViewpage.setCurrentItem(checkedPosition, false);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        layoutTabhost.setChecked(position);
+        layoutViewpage.setCurrentItem(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     public class MyContactListener implements EMContactListener {

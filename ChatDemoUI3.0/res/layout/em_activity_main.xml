@@ -19,6 +19,7 @@
         android:id="@+id/layout_viewpage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/layoutBottom"
         android:layout_below="@+id/rlTop">
 
 
@@ -26,10 +27,11 @@
 
 
     <LinearLayout
-        android:background="@color/white"
+        android:id="@+id/layoutBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <View
@@ -39,6 +41,7 @@
             android:background="#D6CDCD" />
 
         <cn.ran.wechat.widget.DMTabHost
+            android:id="@+id/layout_tabhost"
             android:layout_width="match_parent"
             android:layout_height="47dp">
 
