@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.easemob.redpacketui.utils.RedPacketUtil;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.ran.wechat.Constant;
 import cn.ran.wechat.R;
 import cn.ran.wechat.utils.MFGT;
 
@@ -21,10 +23,6 @@ import cn.ran.wechat.utils.MFGT;
  * Created by Administrator on 2016/11/4.
  */
 public class ProfileFragment extends Fragment {
-    @InjectView(R.id.tvTitle)
-    TextView tvTitle;
-    @InjectView(R.id.ivRight)
-    ImageView ivRight;
     @InjectView(R.id.user_head_avatar)
     ImageView userHeadAvatar;
     @InjectView(R.id.user_usernick)
@@ -50,18 +48,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
+        if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false)) {
             return;
-        initView();
-        setUserInfo();
+        }
+            setUserInfo();
+
+
     }
 
-    private void initView() {
-        tvTitle.setText(R.string.app_name);
-        tvTitle.setVisibility(View.VISIBLE);
-        ivRight.setVisibility(View.VISIBLE);
-        ivRight.setImageResource(R.drawable.icon_add);
-    }
 
     private void setUserInfo() {
         EaseUserUtils.setCurrentAppUserAvatar(getActivity(), userHeadAvatar);
@@ -75,17 +69,30 @@ public class ProfileFragment extends Fragment {
         ButterKnife.reset(this);
     }
 
-    @OnClick({R.id.ivRight, R.id.rl_item_avatar, R.id.tv_money, R.id.tv_setting})
+    @OnClick({R.id.rl_item_avatar, R.id.tv_money, R.id.tv_setting})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ivRight:
-                break;
             case R.id.rl_item_avatar:
+
                 break;
             case R.id.tv_money:
+                //red packet code : 进入零钱页面
+                RedPacketUtil.startChangeActivity(getActivity());
                 break;
+            //end of red packet code
             case R.id.tv_setting:
+                MFGT.gotoSettingActivity(getActivity());
                 break;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (((MainActivity) getActivity()).isConflict) {
+            outState.putBoolean("isConflict", true);
+        } else if (((MainActivity) getActivity()).getCurrentAccountRemoved()) {
+            outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
         }
     }
 }

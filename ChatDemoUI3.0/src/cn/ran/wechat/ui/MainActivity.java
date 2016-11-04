@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -125,6 +125,8 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+
         mContext = this;
         savePower();
         checkLogin(savedInstanceState);
@@ -230,7 +232,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         adapter.addFragment(new ConversationListFragment(), getString(R.string.app_name));
         adapter.addFragment(new ContactListFragment(), getString(R.string.contacts));
         adapter.addFragment(new DicoverFragment(), getString(R.string.discover));
-        adapter.addFragment(new SettingsFragment(), getString(R.string.me));
+        adapter.addFragment(new ProfileFragment(), getString(R.string.me));
         adapter.notifyDataSetChanged();
         layoutTabhost.setChecked(0);
         layoutTabhost.setOnCheckedChangeListener(this);
