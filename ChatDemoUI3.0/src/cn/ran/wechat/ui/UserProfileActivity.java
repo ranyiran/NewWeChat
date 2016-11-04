@@ -21,20 +21,29 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.EMValueCallBack;
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.utils.EaseImageUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.ran.wechat.I;
 import cn.ran.wechat.R;
 import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.bean.Result;
 import cn.ran.wechat.net.NetDao;
 import cn.ran.wechat.utils.CommonUtils;
+import cn.ran.wechat.utils.L;
 import cn.ran.wechat.utils.MFGT;
 import cn.ran.wechat.utils.OkHttpUtils;
 import cn.ran.wechat.utils.ResultUtils;
@@ -221,7 +230,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 break;
             case REQUESTCODE_CUTTING:
                 if (data != null) {
-                    setPicToView(data);
+                    updateAppUserAvatar(data);
+                    //setPicToView(data);
                 }
                 break;
             default:
@@ -229,6 +239,39 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void updateAppUserAvatar(final Intent picData) {
+        dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+        dialog.show();
+        File file = savebitmapFile(picData);
+        L.e(file.toString());
+        NetDao.updateAvatar(this, user.getMUserName(), file, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if (s != null) {
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    if (result != null && result.isRetMsg()) {
+                        setPicToView(picData);
+                    } else {
+                        CommonUtils.showLongToast("上传失败");
+                        dialog.dismiss();
+                    }
+                } else {
+                    CommonUtils.showLongToast("上传失败");
+                    dialog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onError(String error) {
+                L.e("updateAvatar" + error);
+                CommonUtils.showLongToast("上传失败");
+                dialog.dismiss();
+            }
+        });
+    }
+
 
     public void startPhotoZoom(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -260,7 +303,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     }
 
     private void uploadUserAvatar(final byte[] data) {
-        dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
         new Thread(new Runnable() {
 
             @Override
@@ -284,7 +326,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             }
         }).start();
 
-        dialog.show();
+
     }
 
 
@@ -332,5 +374,26 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                         updateRemoteNick(nickString);
                     }
                 }).setNegativeButton(R.string.dl_cancel, null).show();
+    }
+
+    public File savebitmapFile(Intent picdata) {
+        Bundle extras = picdata.getExtras();
+        if (extras != null) {
+            Bitmap bitmap = extras.getParcelable("data");
+            String imagePath = EaseImageUtils.getImagePath(user.getMUserName() + I.AVATAR_SUFFIX_JPG);
+            File file = new File(imagePath);
+            try {
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                bos.flush();
+                bos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return file;
+        }
+        return null;
     }
 }

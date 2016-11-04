@@ -2,6 +2,8 @@ package cn.ran.wechat.net;
 
 import android.content.Context;
 
+import java.io.File;
+
 import cn.ran.wechat.I;
 import cn.ran.wechat.bean.Result;
 import cn.ran.wechat.utils.MD5;
@@ -42,12 +44,23 @@ public class NetDao {
                 .execute(listener);
     }
 
-    public static void updateNice(Context mContext,String username, String nick, OkHttpUtils.OnCompleteListener<String> listener) {
+    public static void updateNice(Context mContext, String username, String nick, OkHttpUtils.OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
                 .addParam(I.User.USER_NAME, username)
                 .addParam(I.User.NICK, nick)
                 .targetClass(String.class)
+                .execute(listener);
+    }
+
+    public static void updateAvatar(Context mContext, String username, File file, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_UPDATE_AVATAR)
+                .addParam(I.NAME_OR_HXID, username)
+                .addParam(I.AVATAR_TYPE, I.AVATAR_TYPE_USER_PATH)
+                .addFile2(file)
+                .targetClass(String.class)
+                .post()
                 .execute(listener);
     }
 }
