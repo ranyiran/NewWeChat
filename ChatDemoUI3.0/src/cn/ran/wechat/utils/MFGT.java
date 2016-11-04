@@ -10,6 +10,7 @@ import cn.ran.wechat.ui.LoginActivity;
 import cn.ran.wechat.ui.MainActivity;
 import cn.ran.wechat.ui.RegisterActivity;
 import cn.ran.wechat.ui.SettingsActivity;
+import cn.ran.wechat.ui.UserProfileActivity;
 
 
 public class MFGT {
@@ -55,9 +56,17 @@ public class MFGT {
         startActivity(mContext, GuideActivity.class);
         mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
     }
+
     public static void gotoSettingActivity(Activity mContext) {
         startActivity(mContext, SettingsActivity.class);
         mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
     }
+
+    public static void gotoUserProfile(Activity mContext) {
+        startActivity(mContext, UserProfileActivity.class);
+        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+
+    }
+
 
 }

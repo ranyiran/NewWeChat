@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment {
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false)) {
             return;
         }
-            setUserInfo();
+        setUserInfo();
 
 
     }
@@ -73,7 +73,7 @@ public class ProfileFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_item_avatar:
-
+                MFGT.gotoUserProfile(getActivity());
                 break;
             case R.id.tv_money:
                 //red packet code : 进入零钱页面
@@ -94,5 +94,11 @@ public class ProfileFragment extends Fragment {
         } else if (((MainActivity) getActivity()).getCurrentAccountRemoved()) {
             outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUserInfo();
     }
 }
