@@ -127,6 +127,7 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
         mIvback.setVisibility(View.VISIBLE);
         mTvTitle.setVisibility(View.VISIBLE);
         mTvTitle.setText("设置");
+        mIvback.setOnClickListener(this);
         rl_switch_notification = (RelativeLayout) findViewById(R.id.rl_switch_notification);
         rl_switch_sound = (RelativeLayout) findViewById(R.id.rl_switch_sound);
         rl_switch_vibrate = (RelativeLayout) findViewById(R.id.rl_switch_vibrate);
