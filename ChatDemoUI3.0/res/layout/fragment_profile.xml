@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ddd"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/item_title" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_item_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/item_avatar" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/icon_me_photo"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical||left"
+        android:padding="5dp"
+        android:text="@string/item_photo"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_collect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="1dip"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/icon_me_collect"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical||left"
+        android:padding="5dp"
+        android:text="收藏"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="20dip"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/icon_me_money"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical||left"
+        android:padding="5dp"
+        android:text="钱包"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_smaile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="20dip"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/icon_me_smail"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical||left"
+        android:padding="5dp"
+        android:text="表情"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="20dip"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/icon_me_setting"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical||left"
+        android:padding="5dp"
+        android:text="设置"
+        android:textColor="@color/black" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ScrollView>
+</LinearLayout>

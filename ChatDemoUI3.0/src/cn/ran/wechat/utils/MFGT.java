@@ -54,4 +54,9 @@ public class MFGT {
         startActivity(mContext, GuideActivity.class);
         mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
     }
+    public static void gotoSettingActivity(Activity mContext) {
+        startActivity(mContext, GuideActivity.class);
+        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+    }
+
 }

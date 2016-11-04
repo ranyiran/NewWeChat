@@ -54,7 +54,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     private void initView() {
         headAvatar = (ImageView) findViewById(R.id.user_head_avatar);
         headPhotoUpdate = (ImageView) findViewById(R.id.user_head_headphoto_update);
-        tvUsername = (TextView) findViewById(R.id.user_username);
+        tvUsername = (TextView) findViewById(R.id.user_usernick);
         tvNickName = (TextView) findViewById(R.id.user_nickname);
         rlNickName = (RelativeLayout) findViewById(R.id.rl_nickname);
         iconRightArrow = (ImageView) findViewById(R.id.ic_right_arrow);
