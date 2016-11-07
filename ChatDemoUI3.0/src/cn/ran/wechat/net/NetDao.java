@@ -63,5 +63,13 @@ public class NetDao {
                 .post()
                 .execute(listener);
     }
+
+    public static void serachUser(Context mContext, String userName, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_FIND_USER)
+                .addParam(I.User.USER_NAME, userName)
+                .targetClass(String.class)
+                .execute(listener);
+    }
 }
 

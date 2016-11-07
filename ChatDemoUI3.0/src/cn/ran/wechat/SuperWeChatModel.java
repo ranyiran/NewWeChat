@@ -13,6 +13,7 @@ import java.util.Map;
 
 import cn.ran.wechat.db.UserDao;
 import cn.ran.wechat.domain.RobotUser;
+import cn.ran.wechat.utils.L;
 import cn.ran.wechat.utils.PreferenceManager;
 
 public class SuperWeChatModel {

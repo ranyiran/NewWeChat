@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.platform.comapi.map.L;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMClient;
@@ -41,7 +42,6 @@ public class EaseUserUtils {
     public static User getAppUserInfo(String username) {
         if (userProvider != null)
             return userProvider.getAppUser(username);
-
         return null;
     }
 
@@ -112,7 +112,7 @@ public class EaseUserUtils {
             if (user != null && user.getMUserNick() != null) {
                 textView.setText(user.getMUserNick());
             } else {
-                textView.setText("moren");
+                textView.setText(user.getMUserNick());
             }
         }
     }
@@ -137,9 +137,12 @@ public class EaseUserUtils {
         setAppUserName("微信号：", username, currentAppUserNameWithNo);
     }
 
+    public static void setAppUserNameWithNo(String username, TextView tvUserName) {
+        setAppUserName("微信号：", username, tvUserName);
+    }
+
     public static void setCurrentAppUserName(TextView currentAppUserNameWithNo) {
         String username = EMClient.getInstance().getCurrentUser();
         setAppUserName("", username, currentAppUserNameWithNo);
     }
-
 }

@@ -395,11 +395,8 @@ public class SuperWeChatHelper {
         if (user == null) {
             user = new User(username);
             EaseCommonUtils.setUserAppInitialLetter(user);
-            L.e(user.toString());
-            L.e(username);
         }
         L.e(user.toString());
-        L.e(username);
         return user;
     }
 

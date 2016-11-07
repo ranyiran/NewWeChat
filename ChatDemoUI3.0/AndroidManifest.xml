@@ -71,6 +71,7 @@
             </intent-filter>
         </activity>
 
+
         <!-- 登陆 -->
         <activity
             android:name="cn.ran.wechat.ui.LoginActivity"
@@ -90,6 +91,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible" />
+        <!--好友详情-->
+        <activity
+            android:name="cn.ran.wechat.ui.FriendProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
+        <!--添加好友详情-->
+        <activity
+            android:name="cn.ran.wechat.ui.AddFriendActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
+        <!-- 聊天页面 -->
         <!-- 聊天页面 -->
         <activity
             android:name="cn.ran.wechat.ui.ChatActivity"

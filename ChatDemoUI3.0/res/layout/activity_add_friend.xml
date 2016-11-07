@@ -2,23 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f2f2"
     android:orientation="vertical">
-
 
     <include layout="@layout/item_title" />
 
     <EditText
-        android:id="@+id/edit_note"
+        android:id="@+id/et_msg"
         android:layout_width="match_parent"
         android:layout_height="39dp"
         android:layout_margin="10dp"
         android:background="@drawable/em_button_normal_shape"
-        android:hint="@string/user_name"
         android:paddingLeft="5dp"
         android:singleLine="true"
         android:textColorHint="#b3b3b3"
         android:textSize="18sp" />
-
 
 </LinearLayout>

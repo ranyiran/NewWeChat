@@ -49,7 +49,21 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="添加朋友"
+        android:layout_marginRight="10dp"
         android:textColor="@color/text_color_hint"
         android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="发送"
+        android:background="@drawable/btn_bg_green"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:textColor="@color/text_color_hint"
+        />
 
 </RelativeLayout>
