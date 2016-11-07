@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,6 +31,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,8 @@ import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.adapter.MainTabAdpter;
 import cn.ran.wechat.db.InviteMessgeDao;
 import cn.ran.wechat.db.UserDao;
+import cn.ran.wechat.dialog.TitleMenu.ActionItem;
+import cn.ran.wechat.dialog.TitleMenu.TitlePopup;
 import cn.ran.wechat.runtimepermissions.PermissionsManager;
 import cn.ran.wechat.runtimepermissions.PermissionsResultAction;
 import cn.ran.wechat.utils.MFGT;
@@ -102,18 +105,18 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     MainActivity mContext;
     @InjectView(R.id.tvTitle)
     TextView tvTitle;
-    @InjectView(R.id.ivRight)
-    ImageView ivRight;
     @InjectView(R.id.layout_viewpage)
     MFViewPager layoutViewpage;
     @InjectView(R.id.layout_tabhost)
     DMTabHost layoutTabhost;
+    @InjectView(R.id.ivRight)
+    ImageView ivRight;
     // user account was removed
     private boolean isCurrentAccountRemoved = false;
 
 
     MainTabAdpter adapter;
-
+    TitlePopup titlePopup;
 
     /**
      * check if current user account was remove
@@ -125,7 +128,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
 
         mContext = this;
         savePower();
@@ -237,8 +240,28 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         layoutTabhost.setChecked(0);
         layoutTabhost.setOnCheckedChangeListener(this);
         layoutViewpage.setOnPageChangeListener(this);
+        titlePopup = new TitlePopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        titlePopup.addAction(new ActionItem(this, R.string.menu_groupchat, R.drawable.icon_menu_group));
+        titlePopup.addAction(new ActionItem(this, R.string.menu_addfriend, R.drawable.icon_menu_addfriend));
+        titlePopup.addAction(new ActionItem(this, R.string.menu_qrcode, R.drawable.icon_menu_sao));
+        titlePopup.addAction(new ActionItem(this, R.string.menu_money, R.drawable.icon_menu_money));
+        titlePopup.setItemOnClickListener(new TitlePopup.OnItemOnClickListener() {
+            @Override
+            public void onItemClick(ActionItem item, int position) {
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        MFGT.gotoAddFriend(mContext);
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
 
-
+                }
+            }
+        });
 //        unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
 //        unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
 //        mTabs = new RelativeLayout[3];
@@ -348,7 +371,8 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     }
 
     @OnClick(R.id.ivRight)
-    public void onClick() {
+    public void showPop() {
+        titlePopup.show(findViewById(R.id.rlTop));
     }
 
     @Override
@@ -371,6 +395,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     public void onPageScrollStateChanged(int state) {
 
     }
+
 
     public class MyContactListener implements EMContactListener {
         @Override
