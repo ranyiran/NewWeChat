@@ -161,7 +161,7 @@
                     android:background="#FFFFFF"
                     android:gravity="center_vertical"
                     android:paddingRight="20dip"
-                    android:text="nick"
+                    android:text="username"
                     android:textColor="#808080"
                     android:textSize="16sp" />
 
@@ -202,7 +202,6 @@
                     android:background="#FFFFFF"
                     android:gravity="center_vertical"
                     android:paddingRight="20dip"
-                    android:text="nick"
                     android:textColor="#808080"
                     android:textSize="16sp" />
 
@@ -251,7 +250,7 @@
                     android:background="#FFFFFF"
                     android:gravity="center_vertical"
                     android:paddingRight="20dip"
-                    android:text="nick"
+                    android:text="未实现"
                     android:textColor="#808080"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -285,7 +284,7 @@
                     android:background="#FFFFFF"
                     android:gravity="center_vertical"
                     android:paddingRight="20dip"
-                    android:text="nick"
+                    android:text="未实现"
                     android:textColor="#808080"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -323,7 +322,7 @@
                     android:background="#FFFFFF"
                     android:gravity="center_vertical"
                     android:paddingRight="20dip"
-                    android:text="nick"
+                    android:text="未实现"
                     android:textColor="#808080"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -356,7 +355,7 @@
                     android:background="#FFFFFF"
                     android:gravity="center_vertical"
                     android:paddingRight="20dip"
-                    android:text="nick"
+                    android:text="未实现"
                     android:textColor="#808080"
                     android:textSize="16sp" />
             </RelativeLayout>

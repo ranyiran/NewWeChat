@@ -251,6 +251,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 if (s != null) {
                     Result result = ResultUtils.getResultFromJson(s, User.class);
                     if (result != null && result.isRetMsg()) {
+                        User u = (User) result.getRetData();
+                        SuperWeChatHelper.getInstance().saveAppContact(u);
                         setPicToView(picData);
                     } else {
                         CommonUtils.showLongToast("上传失败");
@@ -297,12 +299,15 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             Bitmap photo = extras.getParcelable("data");
             Drawable drawable = new BitmapDrawable(getResources(), photo);
             headAvatar.setImageDrawable(drawable);
-            uploadUserAvatar(Bitmap2Bytes(photo));
+            //   uploadUserAvatar(Bitmap2Bytes(photo));
+            Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
+                    Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         }
 
     }
 
-    private void uploadUserAvatar(final byte[] data) {
+  /*  private void uploadUserAvatar(final byte[] data) {
         new Thread(new Runnable() {
 
             @Override
@@ -324,10 +329,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 });
 
             }
-        }).start();
+        }).start();*/
 
 
-    }
+//}
 
 
     public byte[] Bitmap2Bytes(Bitmap bm) {
@@ -382,6 +387,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             Bitmap bitmap = extras.getParcelable("data");
             String imagePath = EaseImageUtils.getImagePath(user.getMUserName() + I.AVATAR_SUFFIX_JPG);
             File file = new File(imagePath);
+            L.i(file.getAbsolutePath());
             try {
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);

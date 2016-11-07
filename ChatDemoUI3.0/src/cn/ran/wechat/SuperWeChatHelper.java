@@ -945,7 +945,7 @@ public class SuperWeChatHelper {
     /**
      * get current user's id
      */
-    public String getCurrentUsernName() {
+    public String getCurrentUserName() {
         if (username == null) {
             username = demoModel.getCurrentUsernName();
         }

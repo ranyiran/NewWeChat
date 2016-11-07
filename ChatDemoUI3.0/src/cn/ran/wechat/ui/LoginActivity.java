@@ -88,6 +88,7 @@ public class LoginActivity extends BaseActivity {
             MFGT.gotoMainActivity(mContext);
             return;
         }
+
         setContentView(R.layout.em_activity_login);
         ButterKnife.inject(this);
         initView();
@@ -117,8 +118,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initView() {
-        if (SuperWeChatHelper.getInstance().getCurrentUsernName() != null) {
-            usernameEditText.setText(SuperWeChatHelper.getInstance().getCurrentUsernName());
+        if (SuperWeChatHelper.getInstance().getCurrentUserName() != null) {
+            usernameEditText.setText(SuperWeChatHelper.getInstance().getCurrentUserName());
         }
         tvCenter.setVisibility(View.VISIBLE);
         tvCenter.setText(R.string.login);
@@ -160,6 +161,9 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    /**
+     * 超级微信的服务器
+     */
     private void LoginServer() {
         NetDao.loginSet(mContext, currentUsername, currentPassword, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
@@ -294,4 +298,5 @@ public class LoginActivity extends BaseActivity {
             pd.dismiss();
         }
     }
+
 }
