@@ -61,23 +61,23 @@ public class MFGT {
 
     public static void gotoGuidActivity(Activity mContext) {
         startActivity(mContext, GuideActivity.class);
-        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public static void gotoSettingActivity(Activity mContext) {
         startActivity(mContext, SettingsActivity.class);
-        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public static void gotoUserProfile(Activity mContext) {
         startActivity(mContext, UserProfileActivity.class);
-        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
     }
 
     public static void gotoAddFriend(Activity mContext) {
         startActivity(mContext, AddContactActivity.class);
-        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public static void gotoFriend(Activity mContext, User user) {
@@ -85,7 +85,7 @@ public class MFGT {
         intent.setClass(mContext, FriendProfileActivity.class);
         intent.putExtra(I.User.USER_NAME, user);
         startActivity(mContext, intent);
-        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public static void gotoAddFriendMsg(Activity mContext, String username) {
@@ -93,12 +93,12 @@ public class MFGT {
         intent.setClass(mContext, AddFriendActivity.class);
         intent.putExtra(I.User.USER_NAME, username);
         startActivity(mContext, intent);
-        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public static void gotoNewFriendsMsg(Activity mContext) {
         startActivity(mContext, NewFriendsMsgActivity.class);
-        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
 
