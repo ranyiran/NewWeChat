@@ -48,7 +48,7 @@ public class FriendProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_frient_profile);
         ButterKnife.inject(this);
         user = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
-        L.e("FriendProfileActivity=====" + user.toString());
+        //   L.e("FriendProfileActivity=====" + user.toString());
         if (user == null) {
             MFGT.finish(this);
         }
@@ -85,6 +85,7 @@ public class FriendProfileActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_send_msg:
+                MFGT.gotoChat(this, user.getMUserName());
                 break;
             case R.id.ivBack:
                 MFGT.finish(this);

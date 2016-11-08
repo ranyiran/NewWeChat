@@ -10,6 +10,7 @@ import cn.ran.wechat.I;
 import cn.ran.wechat.R;
 import cn.ran.wechat.ui.AddContactActivity;
 import cn.ran.wechat.ui.AddFriendActivity;
+import cn.ran.wechat.ui.ChatActivity;
 import cn.ran.wechat.ui.FriendProfileActivity;
 import cn.ran.wechat.ui.GuideActivity;
 import cn.ran.wechat.ui.LoginActivity;
@@ -101,5 +102,11 @@ public class MFGT {
         mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-
+    public static void gotoChat(Activity mContext, String username) {
+        Intent intent = new Intent();
+        intent.setClass(mContext, ChatActivity.class);
+        intent.putExtra("userId", username);
+        startActivity(mContext, intent);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
 }

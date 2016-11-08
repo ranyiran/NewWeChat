@@ -84,7 +84,7 @@
             android:name="cn.ran.wechat.ui.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustResize|stateVisible" />
+             />
         <!-- 注册 -->
         <activity
             android:name="cn.ran.wechat.ui.RegisterActivity"
@@ -96,7 +96,7 @@
             android:name="cn.ran.wechat.ui.FriendProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustResize|stateVisible" />
+             />
         <!--添加好友详情-->
         <activity
             android:name="cn.ran.wechat.ui.AddFriendActivity"

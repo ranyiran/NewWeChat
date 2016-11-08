@@ -51,6 +51,7 @@ public class NewFriendsMsgActivity extends BaseActivity {
         tvCenter.setVisibility(View.VISIBLE);
         tvCenter.setText(getString(R.string.recommended_friends));
 
+        String userid = getIntent().getStringExtra("userid");
         InviteMessgeDao dao = new InviteMessgeDao(this);
         List<InviteMessage> msgs = dao.getMessagesList();
         NewFriendsMsgAdapter adapter = new NewFriendsMsgAdapter(this, 1, msgs);
