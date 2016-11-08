@@ -14,6 +14,7 @@ import cn.ran.wechat.ui.FriendProfileActivity;
 import cn.ran.wechat.ui.GuideActivity;
 import cn.ran.wechat.ui.LoginActivity;
 import cn.ran.wechat.ui.MainActivity;
+import cn.ran.wechat.ui.NewFriendsMsgActivity;
 import cn.ran.wechat.ui.RegisterActivity;
 import cn.ran.wechat.ui.SettingsActivity;
 import cn.ran.wechat.ui.UserProfileActivity;
@@ -86,6 +87,7 @@ public class MFGT {
         startActivity(mContext, intent);
         mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
     }
+
     public static void gotoAddFriendMsg(Activity mContext, String username) {
         Intent intent = new Intent();
         intent.setClass(mContext, AddFriendActivity.class);
@@ -93,4 +95,11 @@ public class MFGT {
         startActivity(mContext, intent);
         mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
     }
+
+    public static void gotoNewFriendsMsg(Activity mContext) {
+        startActivity(mContext, NewFriendsMsgActivity.class);
+        mContext.overridePendingTransition(R.anim.push_bottom_in, R.anim.push_top_out);
+    }
+
+
 }

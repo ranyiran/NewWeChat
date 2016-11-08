@@ -15,6 +15,7 @@ import butterknife.OnClick;
 import cn.ran.wechat.I;
 import cn.ran.wechat.R;
 import cn.ran.wechat.SuperWeChatHelper;
+import cn.ran.wechat.net.NetDao;
 import cn.ran.wechat.utils.L;
 import cn.ran.wechat.utils.MFGT;
 

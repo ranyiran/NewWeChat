@@ -23,6 +23,7 @@ import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.R;
 import cn.ran.wechat.db.InviteMessgeDao;
 import cn.ran.wechat.db.UserDao;
+import cn.ran.wechat.utils.MFGT;
 import cn.ran.wechat.widget.ContactItemView;
 
 import com.hyphenate.easeui.domain.EaseUser;
@@ -182,7 +183,7 @@ public class ContactListFragment extends EaseContactListFragment {
             switch (v.getId()) {
                 case R.id.application_item:
                     // 进入申请与通知页面
-                    startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
+                    MFGT.gotoNewFriendsMsg(getActivity());
                     break;
                 case R.id.group_item:
                     // 进入群聊列表页面

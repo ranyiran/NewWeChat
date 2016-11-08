@@ -371,7 +371,7 @@ public class SuperWeChatHelper {
     }
 
     /*
-      private EaseUser getUserInfo(String username) {
+     private EaseUser getUserInfo(String username) {
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
         EaseUser user = null;
@@ -381,17 +381,10 @@ public class SuperWeChatHelper {
         if (user == null && getRobotList() != null) {
             user = getRobotList().get(username);
         }
-
-        // if user is not in your contacts, set inital letter for him/her
-        if (user == null) {
-            user = new EaseUser(username);
-            EaseCommonUtils.setUserInitialLetter(user);
-        }
-        return user;
-    }
      */
     private User getAppUserInfo(String username) {
-        User user = getAppContactList().get(username);
+        User user = null;
+        user = getAppContactList().get(username);
         if (user == null) {
             user = new User(username);
             EaseCommonUtils.setUserAppInitialLetter(user);

@@ -96,6 +96,7 @@ public class AddContactActivity extends BaseActivity {
                     L.e(TAG, "searchAppUser().result=" + result);
                     if (result != null && result.isRetMsg()) {
                         User user = (User) result.getRetData();
+                        L.e("searchAppUser().user" + user.toString());
                         if (user != null) {
                             progressDialog.dismiss();
                             MFGT.gotoFriend(AddContactActivity.this, user);
