@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import cn.ran.wechat.bean.Result;
 import cn.ran.wechat.db.InviteMessgeDao;
 import cn.ran.wechat.db.SuperWeChatDBManager;
 import cn.ran.wechat.db.UserDao;
@@ -55,6 +56,7 @@ import cn.ran.wechat.domain.EmojiconExampleGroupData;
 import cn.ran.wechat.domain.InviteMessage;
 import cn.ran.wechat.domain.InviteMessage.InviteMesageStatus;
 import cn.ran.wechat.domain.RobotUser;
+import cn.ran.wechat.net.NetDao;
 import cn.ran.wechat.parse.UserProfileManager;
 import cn.ran.wechat.receiver.CallReceiver;
 import cn.ran.wechat.ui.ChatActivity;
@@ -62,7 +64,9 @@ import cn.ran.wechat.ui.MainActivity;
 import cn.ran.wechat.ui.VideoCallActivity;
 import cn.ran.wechat.ui.VoiceCallActivity;
 import cn.ran.wechat.utils.L;
+import cn.ran.wechat.utils.OkHttpUtils;
 import cn.ran.wechat.utils.PreferenceManager;
+import cn.ran.wechat.utils.ResultUtils;
 
 ;
 
@@ -636,16 +640,39 @@ public class SuperWeChatHelper {
 
         @Override
         public void onContactAdded(String username) {
+            L.e("MyContactListener,onContactAdded...");
             // save contact
             Map<String, EaseUser> localUsers = getContactList();
             Map<String, EaseUser> toAddUsers = new HashMap<String, EaseUser>();
-            EaseUser user = new EaseUser(username);
+            final EaseUser user = new EaseUser(username);
 
             if (!localUsers.containsKey(username)) {
                 userDao.saveContact(user);
             }
             toAddUsers.put(username, user);
             localUsers.putAll(toAddUsers);
+            Map<String, User> localAppUsers = getAppContactList();
+            if (!localAppUsers.containsKey(username)) {
+                NetDao.addContact(appContext, EMClient.getInstance().getCurrentUser(), username, new OkHttpUtils.OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (s != null) {
+                            Result result = ResultUtils.getResultFromJson(s, User.class);
+                            if (result != null && result.isRetMsg()) {
+                                User u = (User) result.getRetData();
+                                saveAppContact(u);
+                                broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+
+            }
 
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
