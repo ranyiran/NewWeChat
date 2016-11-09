@@ -96,17 +96,6 @@ public class User implements Serializable {
         return mavatarSuffix == null ? ".jpg" : mavatarSuffix;
     }
 
-//	public String getInitialLetter() {
-//		if(initialLetter == null){
-//			UserUtils.setUserInitialLetter(this);
-//		}
-//		return initialLetter;
-//	}
-
-    //public void setInitialLetter(String initialLetter) {
-    //	this.initialLetter = initialLetter;
-//	}
-
     @Override
     public String toString() {
         return "UserAvatar [muserName=" + muserName + ", muserNick=" + muserNick + ", mavatarId=" + mavatarId

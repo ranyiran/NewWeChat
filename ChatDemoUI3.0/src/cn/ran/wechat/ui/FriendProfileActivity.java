@@ -51,6 +51,7 @@ public class FriendProfileActivity extends BaseActivity {
         //   L.e("FriendProfileActivity=====" + user.toString());
         if (user == null) {
             MFGT.finish(this);
+            return;
         }
         initView();
     }
