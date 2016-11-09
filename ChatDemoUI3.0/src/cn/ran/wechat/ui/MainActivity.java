@@ -57,6 +57,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.ran.wechat.Constant;
+import cn.ran.wechat.I;
 import cn.ran.wechat.R;
 import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.adapter.MainTabAdpter;
@@ -149,13 +150,13 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         // runtime permission for android 6.0, just require all permissions here for simple
         requestPermissions();
         contactListFragment = new ContactListFragment();
+        conversationListFragment = new ConversationListFragment();
         initView();
         ument();
         checkAccount();
 
         inviteMessgeDao = new InviteMessgeDao(this);
         UserDao userDao = new UserDao(this);
-        conversationListFragment = new ConversationListFragment();
 //        SettingsFragment settingFragment = new SettingsFragment();
 //        fragments = new Fragment[]{conversationListFragment, contactListFragment, settingFragment};
 //
@@ -241,7 +242,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         adapter.clear();
         layoutViewpage.setAdapter(adapter);
         layoutViewpage.setOffscreenPageLimit(4);
-        adapter.addFragment(new ConversationListFragment(), getString(R.string.app_name));
+        adapter.addFragment(conversationListFragment, getString(R.string.app_name));
         adapter.addFragment(contactListFragment, getString(R.string.contacts));
         adapter.addFragment(new DicoverFragment(), getString(R.string.discover));
         adapter.addFragment(new ProfileFragment(), getString(R.string.me));
@@ -468,11 +469,8 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     public void updateUnreadLabel() {
         int count = getUnreadMsgCountTotal();
         L.e("updateUnreadLabel===" + count);
-        if (count > 0) {
-            layoutTabhost.setHasNew(1, true);
-        } else {
-            layoutTabhost.setHasNew(1, false);
-        }
+        layoutTabhost.setUnreadCount(0,count);
+
     }
 
     /**
@@ -530,6 +528,12 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
             updateUnreadAddressLable();
         }
 
+        boolean extra = getIntent().getBooleanExtra(I.ACTION_BACK_CONVERSATION, false);
+        L.e(TAG, "extra =" + extra);
+        if (extra) {
+            layoutTabhost.setChecked(0);
+
+        }
         // unregister this event listener when this activity enters the
         // background
         SuperWeChatHelper sdkHelper = SuperWeChatHelper.getInstance();
@@ -643,6 +647,12 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
             showConflictDialog();
         } else if (intent.getBooleanExtra(Constant.ACCOUNT_REMOVED, false) && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
+        }
+
+        boolean isBack = getIntent().getBooleanExtra(I.ACTION_BACK_CONVERSATION, false);
+        L.e(TAG, "isBack=" + isBack);
+        if (isBack) {
+            layoutTabhost.setChecked(0);
         }
     }
 

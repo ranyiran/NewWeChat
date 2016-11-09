@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -131,8 +131,11 @@ public class ContactListFragment extends EaseContactListFragment {
                 if (user != null) {
                     String username = user.getUsername();
                     // demo中直接进入聊天页面，实际一般是进入用户详情页
-                    //  startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
-                    MFGT.gotoFriend(getActivity(), SuperWeChatHelper.getInstance().getAppContactList().get(username));
+                    //startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
+                    User u = SuperWeChatHelper.getInstance().getAppContactList().get(username);
+                    if (u != null) {
+                        MFGT.gotoFriend(getActivity(), u);
+                    }
                 }
             }
         });

@@ -107,7 +107,6 @@
         <!-- 聊天页面 -->
         <activity
             android:name="cn.ran.wechat.ui.ChatActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize" />
