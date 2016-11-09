@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,12 +21,17 @@ import com.hyphenate.chat.EMClient;
 import cn.ran.wechat.SuperWeChatHelper;
 
 import cn.ran.wechat.R;
+import cn.ran.wechat.bean.Result;
 import cn.ran.wechat.db.InviteMessgeDao;
 import cn.ran.wechat.db.UserDao;
+import cn.ran.wechat.net.NetDao;
 import cn.ran.wechat.utils.MFGT;
+import cn.ran.wechat.utils.OkHttpUtils;
+import cn.ran.wechat.utils.ResultUtils;
 import cn.ran.wechat.widget.ContactItemView;
 
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
@@ -245,6 +250,25 @@ public class ContactListFragment extends EaseContactListFragment {
         pd.setMessage(st1);
         pd.setCanceledOnTouchOutside(false);
         pd.show();
+        NetDao.deleteContact(getActivity(), EMClient.getInstance().getCurrentUser(), tobeDeleteUser.getUsername()
+                , new OkHttpUtils.OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (s != null) {
+                            Result result = ResultUtils.getResultFromJson(s, User.class);
+                            if (result != null && result.isRetMsg()) {
+                                SuperWeChatHelper.getInstance().deleteAppContact(tobeDeleteUser.getUsername());
+
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
         new Thread(new Runnable() {
             public void run() {
                 try {

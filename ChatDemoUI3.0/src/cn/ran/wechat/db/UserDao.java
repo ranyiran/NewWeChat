@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -63,7 +63,6 @@ public class UserDao {
     }
 
 
-
     /**
      * delete a contact
      *
@@ -71,6 +70,10 @@ public class UserDao {
      */
     public void deleteContact(String username) {
         SuperWeChatDBManager.getInstance().deleteContact(username);
+    }
+
+    public void deleteAppContact(String username) {
+        SuperWeChatDBManager.getInstance().deleteAppContact(username);
     }
 
     /**
@@ -132,7 +135,7 @@ public class UserDao {
      *
      * @return
      */
-      public Map<String, EaseUser> getContactList() {
+    public Map<String, EaseUser> getContactList() {
 
         return SuperWeChatDBManager.getInstance().getContactList();
     }
