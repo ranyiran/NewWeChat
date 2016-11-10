@@ -54,7 +54,7 @@ public class AddFriendActivity extends BaseActivity {
         tvCenter.setText(getString(R.string.add_friend));
         btnRight.setVisibility(View.VISIBLE);
         msg = getString(R.string.addcontact_send_msg_prefix)
-                + EaseUserUtils.getCurrentAppUserInfo().getMUserNick();
+                + EMClient.getInstance().getCurrentUser();
         etMsg.setText(msg);
     }
 

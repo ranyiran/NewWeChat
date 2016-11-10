@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,7 +53,7 @@ import java.util.Map.Entry;
  * contact list
  *
  */
-public  class EaseContactListFragment extends EaseBaseFragment {
+public class EaseContactListFragment extends EaseBaseFragment {
     private static final String TAG = "EaseContactListFragment";
     protected List<User> contactList;
     protected ListView listView;
@@ -319,6 +319,7 @@ public  class EaseContactListFragment extends EaseBaseFragment {
      */
     public void setContactsMap(Map<String, User> contactsMap) {
         this.contactsMap = contactsMap;
+        contactsMap.remove(EMClient.getInstance().getCurrentUser());
     }
 
     public interface EaseContactListItemClickListener {
