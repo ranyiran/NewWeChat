@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -196,6 +196,7 @@ public class ContactListFragment extends EaseContactListFragment {
                 case R.id.group_item:
                     // 进入群聊列表页面
                     startActivity(new Intent(getActivity(), GroupsActivity.class));
+                    MFGT.gotoGroup(getActivity());
                     break;
          /*   case R.id.chat_room_item:
                 //进入聊天室列表页面

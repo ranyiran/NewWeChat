@@ -12,10 +12,13 @@ import cn.ran.wechat.ui.AddContactActivity;
 import cn.ran.wechat.ui.AddFriendActivity;
 import cn.ran.wechat.ui.ChatActivity;
 import cn.ran.wechat.ui.FriendProfileActivity;
+import cn.ran.wechat.ui.GroupsActivity;
 import cn.ran.wechat.ui.GuideActivity;
 import cn.ran.wechat.ui.LoginActivity;
 import cn.ran.wechat.ui.MainActivity;
 import cn.ran.wechat.ui.NewFriendsMsgActivity;
+import cn.ran.wechat.ui.NewGroupActivity;
+import cn.ran.wechat.ui.PublicGroupsActivity;
 import cn.ran.wechat.ui.RegisterActivity;
 import cn.ran.wechat.ui.SettingsActivity;
 import cn.ran.wechat.ui.UserProfileActivity;
@@ -108,5 +111,17 @@ public class MFGT {
         intent.putExtra("userId", username);
         startActivity(mContext, intent);
         mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    public static void gotoGroup(Activity context) {
+        startActivity(context, GroupsActivity.class);
+    }
+
+    public static void gotoNewGroup(Activity context) {
+        startActivity(context, NewGroupActivity.class);
+    }
+
+    public static void gotoPublicGroup(Activity context) {
+        startActivity(context, PublicGroupsActivity.class);
     }
 }
