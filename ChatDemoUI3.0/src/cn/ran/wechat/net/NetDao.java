@@ -3,6 +3,7 @@ package cn.ran.wechat.net;
 import android.content.Context;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
 
 import java.io.File;
 
@@ -103,5 +104,32 @@ public class NetDao {
         L.e(utils.toString());
     }
 
+    public static void createGroupAvatar(Context mContext, EMGroup emGroup, File file, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_CREATE_GROUP)
+                .addParam(I.Group.HX_ID, emGroup.getGroupId())
+                .addParam(I.Group.NAME, emGroup.getGroupName())
+                .addParam(I.Group.DESCRIPTION, emGroup.getDescription())
+                .addParam(I.Group.OWNER, emGroup.getOwner())
+                .addParam(I.Group.IS_PUBLIC, String.valueOf(emGroup.isPublic()))
+                .addParam(I.Group.ALLOW_INVITES, String.valueOf(emGroup.isAllowInvites()))
+                .addFile2(file)
+                .targetClass(String.class)
+                .post()
+                .execute(listener);
+    }
+    public static void createGroupAvatar(Context mContext, EMGroup emGroup, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_CREATE_GROUP)
+                .addParam(I.Group.HX_ID, emGroup.getGroupId())
+                .addParam(I.Group.NAME, emGroup.getGroupName())
+                .addParam(I.Group.DESCRIPTION, emGroup.getDescription())
+                .addParam(I.Group.OWNER, emGroup.getOwner())
+                .addParam(I.Group.IS_PUBLIC, String.valueOf(emGroup.isPublic()))
+                .addParam(I.Group.ALLOW_INVITES, String.valueOf(emGroup.isAllowInvites()))
+                .targetClass(String.class)
+                .post()
+                .execute(listener);
+    }
 }
 

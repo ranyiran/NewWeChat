@@ -221,22 +221,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUESTCODE_PICK:
-                if (data == null || data.getData() == null) {
-                    return;
-                }
-                startPhotoZoom(data.getData());
-                break;
-            case REQUESTCODE_CUTTING:
-                if (data != null) {
-                    updateAppUserAvatar(data);
-                    //setPicToView(data);
-                }
-                break;
-            default:
-                break;
-        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
