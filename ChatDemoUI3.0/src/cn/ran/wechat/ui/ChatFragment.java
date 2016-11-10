@@ -29,6 +29,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 
 import cn.ran.wechat.Constant;
+import cn.ran.wechat.I;
 import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.R;
 import cn.ran.wechat.domain.EmojiconExampleGroupData;
@@ -100,12 +101,17 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         }
         super.setUpView();
         // set click listener
+        titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         titleBar.setLeftLayoutClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if (EasyUtils.isSingleActivity(getActivity())) {
+
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    //  if (EasyUtils.isSingleActivity(this)) {
+                    intent.putExtra(I.ACTION_BACK_CONVERSATION, true);
+                    //   }
                     startActivity(intent);
                 }
                 onBackPressed();
