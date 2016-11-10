@@ -2,10 +2,14 @@ package cn.ran.wechat.net;
 
 import android.content.Context;
 
+import com.hyphenate.chat.EMClient;
+
 import java.io.File;
 
 import cn.ran.wechat.I;
+import cn.ran.wechat.SuperWeChatHelper;
 import cn.ran.wechat.bean.Result;
+import cn.ran.wechat.utils.L;
 import cn.ran.wechat.utils.MD5;
 import cn.ran.wechat.utils.OkHttpUtils;
 
@@ -80,6 +84,7 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(listener);
     }
+
     public static void deleteContact(Context mContext, String userName, String cuserName, OkHttpUtils.OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_DELETE_CONTACT)
@@ -89,6 +94,14 @@ public class NetDao {
                 .execute(listener);
     }
 
+    public static void loadContact(Context mContext, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_DOWNLOAD_CONTACT_ALL_LIST)
+                .addParam(I.Contact.USER_NAME, EMClient.getInstance().getCurrentUser())
+                .targetClass(String.class)
+                .execute(listener);
+        L.e(utils.toString());
+    }
 
 }
 
