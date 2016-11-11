@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -94,30 +94,32 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
             if (msg.getGroupId() != null) { // show group name
                 holder.groupContainer.setVisibility(View.VISIBLE);
                 holder.groupname.setText(msg.getGroupName());
+                EaseUserUtils.setAppGroupAvatar(context, msg.getGroupId(), holder.avator);
+
             } else {
                 holder.groupContainer.setVisibility(View.GONE);
+                NetDao.serachUser(context, msg.getFrom(), new OkHttpUtils.OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (s != null) {
+                            Result result = ResultUtils.getResultFromJson(s, User.class);
+                            if (result != null && result.isRetMsg()) {
+                                User u = (User) result.getRetData();
+                                EaseUserUtils.setAppUserPathAvatar(context, u.getAvatar(), holder.avator);
+                                EaseUserUtils.setAppUserNick(u.getMUserNick(), holder.name);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
             }
 
             holder.reason.setText(msg.getReason());
-            holder.name.setText(msg.getFrom());
-            NetDao.serachUser(context, msg.getFrom(), new OkHttpUtils.OnCompleteListener<String>() {
-                @Override
-                public void onSuccess(String s) {
-                    if (s != null) {
-                        Result result = ResultUtils.getResultFromJson(s, User.class);
-                        if (result != null && result.isRetMsg()) {
-                            User u = (User) result.getRetData();
-                            EaseUserUtils.setAppUserPathAvatar(context, u.getAvatar(), holder.avator);
-                            EaseUserUtils.setAppUserNick(u.getMUserNick(), holder.name);
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(String error) {
-
-                }
-            });
+          //  holder.name.setText(msg.getFrom());
             // holder.time.setText(DateUtils.getTimestampString(new
             // Date(msg.getTime())));
             if (msg.getStatus() == InviteMessage.InviteMesageStatus.BEAGREED) {

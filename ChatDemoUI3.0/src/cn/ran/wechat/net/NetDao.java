@@ -118,6 +118,7 @@ public class NetDao {
                 .post()
                 .execute(listener);
     }
+
     public static void createGroupAvatar(Context mContext, EMGroup emGroup, OkHttpUtils.OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_CREATE_GROUP)
@@ -131,5 +132,28 @@ public class NetDao {
                 .post()
                 .execute(listener);
     }
+
+    public static void addGroupMembers(Context mContext, EMGroup emGroup, OkHttpUtils.OnCompleteListener<String> listener) {
+        String memberArr = "";
+        for (String m : emGroup.getMembers()) {
+            if (!m.equals(SuperWeChatHelper.getInstance().getCurrentUserName())) {
+                memberArr += m + ",";
+
+            }
+        }
+        memberArr = memberArr.substring(0, memberArr.length() - 1);
+        L.e("addGroupMembers", "" + memberArr);
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+                .addParam(I.Member.GROUP_HX_ID, emGroup.getGroupId())
+                .addParam(I.Member.USER_NAME, memberArr)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
+
 }
+
+
+
 

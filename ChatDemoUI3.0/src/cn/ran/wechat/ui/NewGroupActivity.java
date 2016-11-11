@@ -57,6 +57,7 @@ import cn.ran.wechat.I;
 import cn.ran.wechat.R;
 import cn.ran.wechat.bean.Result;
 import cn.ran.wechat.net.NetDao;
+import cn.ran.wechat.utils.CommonUtils;
 import cn.ran.wechat.utils.L;
 import cn.ran.wechat.utils.MFGT;
 import cn.ran.wechat.utils.OkHttpUtils;
@@ -79,6 +80,7 @@ public class NewGroupActivity extends BaseActivity {
     private TextView secondTextView;
 
     File file = null;
+    EMGroup emgroup = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +180,7 @@ public class NewGroupActivity extends BaseActivity {
                         option.style = memberCheckbox.isChecked() ? EMGroupStyle.EMGroupStylePrivateMemberCanInvite : EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
                     }
 
-                    EMGroup emgroup = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
+                    emgroup = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
                     emgroup.getGroupId();
                     createAppGroup(emgroup);
                     createGroupSuccess();
@@ -200,42 +202,67 @@ public class NewGroupActivity extends BaseActivity {
 
     private void createAppGroup(EMGroup emGroup) {
         if (file == null) {
-            NetDao.createGroupAvatar(this, emGroup, new OkHttpUtils.OnCompleteListener<String>() {
-                @Override
-                public void onSuccess(String s) {
-                    afterCreateAppGroup(s);
-                }
-
-                @Override
-                public void onError(String e) {
-
-                }
-            });
+            NetDao.createGroupAvatar(this, emGroup, listener);
         } else {
-            NetDao.createGroupAvatar(this, emGroup, file, new OkHttpUtils.OnCompleteListener<String>() {
-                @Override
-                public void onSuccess(String s) {
-
-                }
-
-                @Override
-                public void onError(String e) {
-
-                }
-            });
+            NetDao.createGroupAvatar(this, emGroup, file, listener);
         }
+
     }
 
-    private void afterCreateAppGroup(String s) {
-        if (s != null) {
-            Result result = ResultUtils.getResultFromJson(s, Group.class);
-            L.e(TAG, "afterCreateAppGroup==" + result.toString());
-            if (result != null && result.isRetMsg()) {
-                Group group = (Group) result.getRetData();
+    OkHttpUtils.OnCompleteListener listener = new OkHttpUtils.OnCompleteListener<String>() {
+        @Override
+        public void onSuccess(String s) {
+            if (s != null) {
+                Result result = ResultUtils.getResultFromJson(s, Group.class);
+                L.i("result=" + result.toString());
+                if (result != null && result.isRetMsg()) {
+                    if (emgroup != null && emgroup.getMembers() != null && emgroup.getMembers().size() > 1) {
+                        addGroupMembers();
+                    } else {
+                        createGroupSuccess();
+                    }
+                } else {
+                    progressDialog.dismiss();
+                    CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+                }
+
+            } else {
+                progressDialog.dismiss();
+                CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+
             }
 
         }
+
+        @Override
+        public void onError(String e) {
+            progressDialog.dismiss();
+            CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+
+        }
+    };
+
+    private void addGroupMembers() {
+        NetDao.addGroupMembers(this, emgroup, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if (s != null) {
+                    Result result = ResultUtils.getResultFromJson(s, Group.class);
+                    if (result != null && result.isRetMsg()) {
+                        L.e("addGroupMembers=" + result);
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
+
 
     private void createGroupSuccess() {
         runOnUiThread(new Runnable() {
