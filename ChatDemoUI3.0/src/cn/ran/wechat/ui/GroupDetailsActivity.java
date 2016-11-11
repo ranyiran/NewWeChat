@@ -307,7 +307,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	/**
 	 * 退出群组
 	 * 
-	 * @param groupId
 	 */
 	private void exitGrop() {
 		String st1 = getResources().getString(R.string.Exit_the_group_chat_failure);
