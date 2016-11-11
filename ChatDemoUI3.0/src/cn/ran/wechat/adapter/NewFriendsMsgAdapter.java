@@ -16,7 +16,6 @@ package cn.ran.wechat.adapter;
 import java.util.List;
 
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
@@ -98,7 +97,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 
             } else {
                 holder.groupContainer.setVisibility(View.GONE);
-                NetDao.serachUser(context, msg.getFrom(), new OkHttpUtils.OnCompleteListener<String>() {
+                NetDao.searchUser(context, msg.getFrom(), new OkHttpUtils.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String s) {
                         if (s != null) {

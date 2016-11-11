@@ -17,10 +17,8 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,7 +86,7 @@ public class AddContactActivity extends BaseActivity {
     }
 
     private void searchAppUser() {
-        NetDao.serachUser(this, toAddUsername, new OkHttpUtils.OnCompleteListener<String>() {
+        NetDao.searchUser(this, toAddUsername, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
                 if (s != null) {
@@ -99,7 +97,7 @@ public class AddContactActivity extends BaseActivity {
                         L.e("searchAppUser().user" + user.toString());
                         if (user != null) {
                             progressDialog.dismiss();
-                            MFGT.gotoFriend(AddContactActivity.this, user);
+                            MFGT.gotoFriend(AddContactActivity.this, user.getMUserName());
                         }
 
                     } else {
