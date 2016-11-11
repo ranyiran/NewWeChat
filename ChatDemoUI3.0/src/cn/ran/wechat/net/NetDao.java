@@ -69,7 +69,14 @@ public class NetDao {
                 .execute(listener);
     }
 
-    public static void serachUser(Context mContext, String userName, OkHttpUtils.OnCompleteListener<String> listener) {
+    public static void searchUser(Context mContext, String userName, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_FIND_USER)
+                .addParam(I.User.USER_NAME, userName)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+    public static void syncUser(Context mContext, String userName, OkHttpUtils.OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_FIND_USER)
                 .addParam(I.User.USER_NAME, userName)
@@ -150,7 +157,6 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(listener);
     }
-
 
 }
 

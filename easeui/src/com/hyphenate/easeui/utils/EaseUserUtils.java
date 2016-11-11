@@ -155,15 +155,18 @@ public class EaseUserUtils {
      * set user's nickname
      */
     public static void setAppUserNick(String username, TextView textView) {
-        if (textView != null) {
-            User user = getAppUserInfo(username);
-            Log.e("nick", "" + user.getMUserNick());
-            if (user != null && user.getMUserNick() != null) {
-                textView.setText(user.getMUserNick());
-            } else {
-                textView.setText(username);
+        if (username != null) {
+            if (textView != null) {
+                User user = getAppUserInfo(username);
+                Log.e("nick", "" + user.getMUserNick());
+                if (user != null && user.getMUserNick() != null) {
+                    textView.setText(user.getMUserNick());
+                } else {
+                    textView.setText(username);
+                }
             }
         }
+
     }
 
     public static void setCurrentAppUserAvatar(FragmentActivity activity, ImageView userHeadAvatar) {
@@ -187,7 +190,9 @@ public class EaseUserUtils {
     }
 
     public static void setAppUserNameWithNo(String username, TextView tvUserName) {
-        setAppUserName("微信号：", username, tvUserName);
+        if (username != null) {
+            setAppUserName("微信号：", username, tvUserName);
+        }
     }
 
     public static void setCurrentAppUserName(TextView currentAppUserNameWithNo) {

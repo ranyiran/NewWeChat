@@ -84,13 +84,20 @@ public class MFGT {
         mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-    public static void gotoFriend(Activity mContext, User user) {
+    public static void gotoFriend(Activity mContext, String username) {
         Intent intent = new Intent();
         intent.setClass(mContext, FriendProfileActivity.class);
-        intent.putExtra(I.User.USER_NAME, user);
+        intent.putExtra(I.User.USER_NAME, username);
         startActivity(mContext, intent);
         mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
+   /* public static void gotoFriend(Activity mContext, String  username) {
+        Intent intent = new Intent();
+        intent.setClass(mContext, FriendProfileActivity.class);
+        intent.putExtra(I.User.USER_NAME, username);
+        startActivity(mContext, intent);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }*/
 
     public static void gotoAddFriendMsg(Activity mContext, String username) {
         Intent intent = new Intent();
